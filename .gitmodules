@@ -1,0 +1,3 @@
+[submodule "cbmc"]
+	path = cbmc
+	url = https://github.com/diffblue/cbmc.git

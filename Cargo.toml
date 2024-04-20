@@ -1,0 +1,19 @@
+[package]
+name = "jbmc-counterexample"
+version = "0.1.0"
+edition = "2021"
+description = "A tool to extract counterexamples from JBMC output"
+authors = ["Nikolaos Karaolidis <nick@karaolidis.com>"]
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[dependencies]
+clap = { version = "4.5.4", features = ["derive"] }
+genco = "0.17.8"
+indexmap = "2.2.6"
+log = "0.4.21"
+log4rs = "1.3.0"
+pathsearch = "0.2.0"
+serde = "1.0.198"
+serde-aux = "4.5.0"
+serde_json = "1.0.116"
