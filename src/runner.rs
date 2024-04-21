@@ -4,7 +4,6 @@ use std::{path::Path, process::Command};
 
 pub fn compile_java_class(file: &Path, javac_path: &Path) {
     let output = Command::new(javac_path)
-        .arg("-g")
         .arg(file)
         .output()
         .expect("Failed to compile Java file");

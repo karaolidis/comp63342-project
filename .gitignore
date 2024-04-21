@@ -12,3 +12,4 @@ target/
 # Java Stuff
 *.class
 *CE*.java
+output.json

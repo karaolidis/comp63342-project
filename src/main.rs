@@ -6,7 +6,6 @@ mod jbmc;
 mod parser;
 mod runner;
 
-use codegen::generate_counterexample;
 use parser::parse_jdmc_output;
 use runner::{compile_java_class, run_jbmc};
 
@@ -118,19 +117,13 @@ fn main() {
     info!("JBMC version: {}", jbmc_version);
 
     compile_java_class(&file_path, &javac_path);
-
-    let output = run_jbmc(&file_path, &args.entrypoint, &jbmc_path);
-
-    let inputs = parse_jdmc_output(output);
     let class = file_path.file_stem().unwrap().to_str().unwrap();
 
-    for (i, input) in inputs.into_iter().enumerate() {
-        let counterexample_class = format!("{class}CE{i}");
-        let counterexample =
-            generate_counterexample(class, &args.entrypoint, &counterexample_class, input);
+    let output = run_jbmc(&file_path, &args.entrypoint, &jbmc_path);
+    let counterexamples = parse_jdmc_output(output, class, &args.entrypoint);
 
-        let counterexample_file = file_path.with_file_name(format!("{counterexample_class}.java"));
-        fs::write(&counterexample_file, counterexample)
-            .expect("Failed to write counterexample file");
+    for (i, counterexample) in counterexamples.into_iter().enumerate() {
+        let file = file_path.with_file_name(format!("{class}CE_{i}.java"));
+        fs::write(&file, counterexample).expect("Failed to write counterexample file");
     }
 }

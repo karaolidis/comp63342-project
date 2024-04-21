@@ -1,9 +1,11 @@
-use crate::jbmc::{self, result::Value, Output};
+use crate::{
+    codegen::generate_counterexample,
+    jbmc::{self, Output},
+};
 
-use indexmap::IndexMap;
 use log::info;
 
-pub fn parse_jdmc_output(output: Vec<Output>) -> Vec<IndexMap<String, Value>> {
+pub fn parse_jdmc_output(output: Vec<Output>, class: &str, entrypoint: &str) -> Vec<String> {
     if !output
         .iter()
         .any(|o| matches!(o, Output::CProverStatus(jbmc::CProverStatus::Failure)))
@@ -25,34 +27,13 @@ pub fn parse_jdmc_output(output: Vec<Output>) -> Vec<IndexMap<String, Value>> {
 
     failures
         .into_iter()
-        .map(|failure| {
-            let mut reason = None;
-            let mut inputs: IndexMap<String, Value> = IndexMap::new();
-
-            match &failure.status {
-                jbmc::result::Status::Failure { trace } => {
-                    for t in trace {
-                        match &t.variant {
-                            jbmc::result::trace::Variant::Input(i) => {
-                                inputs.insert(i.id.clone(), i.values.first().unwrap().clone());
-                            }
-                            jbmc::result::trace::Variant::Failure(f) => {
-                                reason = Some(f.reason.clone());
-                            }
-                            jbmc::result::trace::Variant::Other => (),
-                        }
-                    }
-                }
+        .map(|result| {
+            let trace = match result.status {
+                jbmc::result::Status::Failure { trace } => trace,
                 jbmc::result::Status::Success => unreachable!(),
             };
 
-            info!(
-                "Reason: {}, Inputs: {:?}",
-                reason.unwrap_or_else(|| "Unknown".to_string()),
-                inputs
-            );
-
-            inputs
+            generate_counterexample(trace, class, entrypoint)
         })
-        .collect::<Vec<_>>()
+        .collect()
 }
