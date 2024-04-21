@@ -3,7 +3,7 @@ use crate::{
     jbmc::{self, Output},
 };
 
-use log::info;
+use log::{error, info};
 
 pub fn parse_jdmc_output(output: Vec<Output>, class: &str, entrypoint: &str) -> Vec<String> {
     if !output
@@ -27,13 +27,19 @@ pub fn parse_jdmc_output(output: Vec<Output>, class: &str, entrypoint: &str) -> 
 
     failures
         .into_iter()
-        .map(|result| {
+        .filter_map(|result| {
             let trace = match result.status {
                 jbmc::result::Status::Failure { trace } => trace,
                 jbmc::result::Status::Success => unreachable!(),
             };
 
-            generate_counterexample(trace, class, entrypoint)
+            match generate_counterexample(trace, class, entrypoint) {
+                Ok(counterexample) => Some(counterexample),
+                Err(e) => {
+                    error!("Failed to generate counterexample: {}", e);
+                    None
+                }
+            }
         })
         .collect()
 }

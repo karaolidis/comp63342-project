@@ -1,11 +1,15 @@
 use crate::jbmc::result::{trace, Trace, Value};
 
 use genco::{lang::java, quote};
-use log::warn;
 use regex::Regex;
+use std::error::Error;
 
 #[allow(clippy::too_many_lines)]
-pub fn generate_counterexample(traces: Vec<Trace>, class: &str, entrypoint: &str) -> String {
+pub fn generate_counterexample(
+    traces: Vec<Trace>,
+    class: &str,
+    entrypoint: &str,
+) -> Result<String, Box<dyn Error>> {
     let traces = traces.into_iter().filter(|t| !t.hidden).collect::<Vec<_>>();
     let mut body: java::Tokens = quote! {};
 
@@ -44,15 +48,16 @@ pub fn generate_counterexample(traces: Vec<Trace>, class: &str, entrypoint: &str
                             let type_ = captures.name("type").unwrap().as_str();
 
                             if type_.contains("$$") {
-                                warn!("Handling classes with $ in their name is not implemented");
-                                break;
+                                return Err(
+                                    "Handling classes with $ in their name is not implemented"
+                                        .into(),
+                                );
                             }
 
                             let type_ = type_.replace('$', ".");
 
                             if pointer.data.is_some() {
-                                warn!("Handling data is not implemented");
-                                break;
+                                return Err("Handling pointers with data is not implemented".into());
                             }
 
                             body.append(quote! {
@@ -124,5 +129,5 @@ pub fn generate_counterexample(traces: Vec<Trace>, class: &str, entrypoint: &str
         }
     };
 
-    tokens.to_file_string().unwrap()
+    Ok(tokens.to_file_string()?)
 }
