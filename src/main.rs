@@ -10,7 +10,7 @@ use parser::parse_jdmc_output;
 use runner::{compile_java_class, run_jbmc};
 
 use clap::Parser;
-use log::{info, warn};
+use log::{error, info, warn};
 use pathsearch::find_executable_in_path;
 use std::{fs, path::Path, process::Command};
 
@@ -123,7 +123,18 @@ fn main() {
     let counterexamples = parse_jdmc_output(output, class, &args.entrypoint);
 
     for (i, counterexample) in counterexamples.into_iter().enumerate() {
-        let file = file_path.with_file_name(format!("{class}CE_{i}.java"));
-        fs::write(&file, counterexample).expect("Failed to write counterexample file");
+        match counterexample {
+            Ok(counterexample) => {
+                let file = file_path.with_file_name(format!("{class}CE_{i}.java"));
+                let result = fs::write(&file, counterexample);
+
+                if let Err(e) = result {
+                    error!("Failed to write counterexample to file: {}", e);
+                }
+            }
+            Err(e) => {
+                error!("Failed to generate counterexample: {}", e);
+            }
+        }
     }
 }

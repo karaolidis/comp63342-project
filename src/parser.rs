@@ -3,9 +3,14 @@ use crate::{
     jbmc::{self, Output},
 };
 
-use log::{error, info};
+use log::info;
+use std::error::Error;
 
-pub fn parse_jdmc_output(output: Vec<Output>, class: &str, entrypoint: &str) -> Vec<String> {
+pub fn parse_jdmc_output(
+    output: Vec<Output>,
+    class: &str,
+    entrypoint: &str,
+) -> Vec<Result<String, Box<dyn Error>>> {
     if !output
         .iter()
         .any(|o| matches!(o, Output::CProverStatus(jbmc::CProverStatus::Failure)))
@@ -27,19 +32,13 @@ pub fn parse_jdmc_output(output: Vec<Output>, class: &str, entrypoint: &str) -> 
 
     failures
         .into_iter()
-        .filter_map(|result| {
+        .map(|result| {
             let trace = match result.status {
                 jbmc::result::Status::Failure { trace } => trace,
                 jbmc::result::Status::Success => unreachable!(),
             };
 
-            match generate_counterexample(trace, class, entrypoint) {
-                Ok(counterexample) => Some(counterexample),
-                Err(e) => {
-                    error!("Failed to generate counterexample: {}", e);
-                    None
-                }
-            }
+            generate_counterexample(trace, class, entrypoint)
         })
         .collect()
 }
