@@ -16,7 +16,6 @@ use std::{fs, path::Path, process::Command};
 
 #[derive(Parser, Debug)]
 #[command(version, about, long_about = None, author)]
-#[allow(clippy::struct_field_names)]
 struct Args {
     /// Path to the Java file/folder to be analyzed.
     /// If it's a folder, the file must be named either Main.java or the same as the folder.
@@ -65,6 +64,10 @@ fn main() {
         .canonicalize()
         .expect("Failed to canonicalize file path, ensure the file exists");
 
+    if let Ok(p) = file_path.strip_prefix(r"\\?\") {
+        file_path = p.to_path_buf();
+    }
+
     if file_path.is_dir() {
         let folder_name = file_path.file_name().unwrap().to_str().unwrap();
 
@@ -80,15 +83,23 @@ fn main() {
         }
     }
 
-    let javac_path = Path::new(&args.javac_path)
+    let mut javac_path = Path::new(&args.javac_path)
         .canonicalize()
         .unwrap_or_else(|_| {
             find_executable_in_path(&args.javac_path).expect("Failed to find javac, ensure that the Java compiler is installed and accessible via the path in -c (--javac-path)")
         });
 
-    let jbmc_path = Path::new(&args.jbmc_path)
+    if let Ok(p) = javac_path.strip_prefix(r"\\?\") {
+        javac_path = p.to_path_buf();
+    }
+
+    let mut jbmc_path = Path::new(&args.jbmc_path)
         .canonicalize()
         .unwrap_or_else(|_| find_executable_in_path(&args.jbmc_path).expect("Failed to find jbmc, ensure that JBMC is installed and accessible via the path in -j (--jbmc-path)"));
+
+    if let Ok(p) = jbmc_path.strip_prefix(r"\\?\") {
+        jbmc_path = p.to_path_buf();
+    }
 
     let javac_version = Command::new(&javac_path)
         .arg("--version")
