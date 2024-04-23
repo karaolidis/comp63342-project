@@ -14,7 +14,7 @@ pub fn generate_counterexample(
     let mut body: java::Tokens = quote! {};
 
     let mut function_call_is_last = false;
-    let mut function_call_params = Vec::<String>::new();
+    let mut function_call_params = vec![];
 
     for (index, trace) in traces.iter().cloned().enumerate() {
         let next_trace = traces.get(index + 1);
@@ -64,9 +64,15 @@ pub fn generate_counterexample(
                                 $type_ $(&assignment.lhs) = null;$['\r']
                             });
                         }
-                        Value::String(_) => todo!(),
-                        Value::Struct(_) => todo!(),
-                        Value::Other => unimplemented!(),
+                        Value::String(_) => {
+                            return Err("Handling strings is not implemented".into());
+                        }
+                        Value::Struct(_) => {
+                            return Err("Handling structs is not implemented".into());
+                        }
+                        Value::Other => {
+                            return Err("Handling other values is not implemented".into());
+                        }
                     },
                     trace::AssignmentVariant::ActualParameter => {
                         function_call_params.push(assignment.lhs.clone());
