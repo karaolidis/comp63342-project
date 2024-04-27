@@ -27,9 +27,29 @@ pub fn generate_counterexample(
 
                 match assignment.variant {
                     trace::AssignmentVariant::Variable => match assignment.value {
+                        Value::I8(i) => {
+                            body.append(quote! {
+                                byte $(&assignment.lhs) = $i;$['\r']
+                            });
+                        }
+                        Value::I16(i) => {
+                            body.append(quote! {
+                                short $(&assignment.lhs) = $i;$['\r']
+                            });
+                        }
                         Value::I32(i) => {
                             body.append(quote! {
                                 int $(&assignment.lhs) = $i;$['\r']
+                            });
+                        }
+                        Value::I64(i) => {
+                            body.append(quote! {
+                                long $(&assignment.lhs) = $i;$['\r']
+                            });
+                        }
+                        Value::F32(f) => {
+                            body.append(quote! {
+                                float $(&assignment.lhs) = $(format!("{:?}", f));$['\r']
                             });
                         }
                         Value::F64(f) => {
@@ -40,6 +60,11 @@ pub fn generate_counterexample(
                         Value::Bool(b) => {
                             body.append(quote! {
                                 boolean $(&assignment.lhs) = $(format!("{:?}", b));$['\r']
+                            });
+                        }
+                        Value::Char(c) => {
+                            body.append(quote! {
+                                char $(&assignment.lhs) = $(format!("{:?}", c));$['\r']
                             });
                         }
                         Value::Pointer(pointer) => {
