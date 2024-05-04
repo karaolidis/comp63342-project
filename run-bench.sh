@@ -20,7 +20,7 @@ for folder in "$base_dir"/*/; do
     if [[ -f "$stderr_file" ]]; then
         num_stderr=$((num_stderr + 1))
 
-        if grep -q "Timeout" "$stderr_file"; then
+        if grep -q "timed out" "$stderr_file"; then
             num_folders_with_timeout=$((num_folders_with_timeout + 1))
             continue
         fi

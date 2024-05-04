@@ -7,8 +7,7 @@ run_jbmc() {
     folder="$1"
     stdout_file="$folder/stdout.log"
     stderr_file="$folder/stderr.log"
-    timeout 30s ./target/release/jbmc-counterexample -j ./cbmc/jbmc/src/jbmc/jbmc "$folder" \
-        >"$stdout_file" 2>"$stderr_file" || echo "Timeout." >>"$stderr_file"
+    ./target/release/jbmc-counterexample -j ./cbmc/jbmc/src/jbmc/jbmc -t 30 "$folder" >"$stdout_file" 2>"$stderr_file"
 }
 
 export -f run_jbmc
