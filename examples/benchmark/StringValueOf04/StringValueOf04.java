@@ -1,5 +1,5 @@
 public class StringValueOf04 {
-  public void test(boolean booleanValue) {
+  public static void test(boolean booleanValue) {
     String tmp = String.valueOf(booleanValue);
     assert tmp.equals("true");
   }

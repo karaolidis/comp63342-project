@@ -1,11 +1,11 @@
 public class calc {
-  void do_stuff(String a, String b) {
+  static void do_stuff(String a, String b) {
     int x = Integer.parseInt(a);
     int y = Integer.parseInt(b);
     assert Integer.parseInt(a) != Integer.parseInt(b) || x == y;
   }
 
-  public void test(int size, String arg1, String arg2) {
+  public static void test(int size, String arg1, String arg2) {
     if (size < 2) {
       System.out.println("need two arguments");
       return;

@@ -11,7 +11,7 @@ class D extends C {
 }
 
 public class exceptions1 {
-  public void test() {
+  public static void test() {
     D d = new D();
     C c = new C();
     B b = new B();

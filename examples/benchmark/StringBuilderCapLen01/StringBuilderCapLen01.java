@@ -7,9 +7,8 @@
  * The benchmark was taken from the repo: 24 January 2018
  */
 public class StringBuilderCapLen01 {
-  public void test() {
-    StringBuilder buffer =
-        new StringBuilder("Diffblue is leader in automatic test case generation");
+  public static void test() {
+    StringBuilder buffer = new StringBuilder("Diffblue is leader in automatic test case generation");
 
     assert buffer.toString().equals("Diffblue is leader in automatic test case generation");
     assert buffer.length() == 52;

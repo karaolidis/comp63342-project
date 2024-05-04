@@ -1,5 +1,5 @@
 class instanceof4 {
-  public void test() {
+  public static void test() {
     assert "" instanceof String;
   }
 }

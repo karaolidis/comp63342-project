@@ -1,7 +1,7 @@
 import java.util.Scanner;
 
 public class StaticCharMethods05 {
-  public void test(String input) {
+  public static void test(String input) {
     Scanner scanner = new Scanner(input);
 
     int radix = scanner.nextInt();

@@ -1,5 +1,5 @@
 public class StringConstructors01 {
-  public void test(char[] charArray, String initialString) {
+  public static void test(char[] charArray, String initialString) {
     String s1 = new String();
     String s2 = new String(initialString);
     String s3 = new String(charArray);

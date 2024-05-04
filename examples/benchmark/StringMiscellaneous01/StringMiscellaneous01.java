@@ -1,5 +1,5 @@
 public class StringMiscellaneous01 {
-  public void test(String s1, String s2, String s3, char[] charArray) {
+  public static void test(String s1, String s2, String s3, char[] charArray) {
     assert s1.length() == 25;
 
     int i = 0;

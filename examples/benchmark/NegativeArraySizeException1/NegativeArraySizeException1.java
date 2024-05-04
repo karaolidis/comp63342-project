@@ -1,5 +1,5 @@
 public class NegativeArraySizeException1 {
-  public void test() {
+  public static void test() {
     int a[] = new int[-1];
   }
 }

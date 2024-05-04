@@ -1,16 +1,19 @@
 public class StringCompare01 {
-  public void test(String s1, String s2, String s3, String s4) {
+  public static void test(String s1, String s2, String s3, String s4) {
     if (s1.equals("test")) // true
-    assert true;
-    else assert false;
+      assert true;
+    else
+      assert false;
 
     if (s1 != "test") // false; s1 is initialized with "test"
-    assert true;
-    else assert false;
+      assert true;
+    else
+      assert false;
 
     if (s3.equalsIgnoreCase(s4)) // true
-    assert true;
-    else assert false;
+      assert true;
+    else
+      assert false;
 
     assert s1.compareTo(s2) == 13; // result depends on actual lexicographic comparison
 
@@ -24,12 +27,14 @@ public class StringCompare01 {
 
     // test regionMatches (case sensitive)
     if (!s3.regionMatches(0, s4, 0, 5)) // true
-    assert true;
-    else assert false;
+      assert true;
+    else
+      assert false;
 
     // test regionMatches (ignore case)
     if (s3.regionMatches(true, 0, s4, 0, 5)) // true
-    assert true;
-    else assert false;
+      assert true;
+    else
+      assert false;
   }
 }

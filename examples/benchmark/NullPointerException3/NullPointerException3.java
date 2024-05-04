@@ -3,7 +3,7 @@ class A {
 }
 
 public class NullPointerException3 {
-  public void test(A a) {
+  public static void test(A a) {
     if (a == null) {
       throw new NullPointerException();
     }

@@ -1,7 +1,7 @@
 import java.util.Arrays;
 
 public class RegexSubstitution03 {
-  public void test(String firstString, String secondString) {
+  public static void test(String firstString, String secondString) {
     firstString = firstString.replaceAll("\\*", "^");
 
     assert firstString.equals("DiffBlue ^^^");
@@ -17,7 +17,8 @@ public class RegexSubstitution03 {
     System.out.printf("Original String 2: %s\n", secondString);
     assert secondString.equals("Automated Test Case Generation");
 
-    for (int i = 0; i < 3; i++) secondString = secondString.replaceFirst("\\A", "automated");
+    for (int i = 0; i < 3; i++)
+      secondString = secondString.replaceFirst("\\A", "automated");
 
     System.out.print("String split at commas: ");
     String[] results = secondString.split(" \\s*");

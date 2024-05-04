@@ -1,5 +1,5 @@
 class const1 {
-  public void test() {
+  public static void test() {
     assert 0.0f < 1.0f;
     assert 0.0 < 1.0;
     assert 1.0f < 2.0f;

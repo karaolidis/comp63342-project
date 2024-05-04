@@ -1,5 +1,5 @@
 class astore_aload1 {
-  public void test(int size) {
+  public static void test(int size) {
     boolean[] boolean_array = new boolean[size];
     byte[] byte_array = new byte[size];
     char[] char_array = new char[size];

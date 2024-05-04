@@ -21,7 +21,7 @@ class Outer implements Interface {
 }
 
 public class virtual_function_unwinding {
-  public void test() {
+  public static void test() {
     assert new Outer(new Inner()).b();
   }
 }

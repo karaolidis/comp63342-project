@@ -1,9 +1,10 @@
 class A {
-    public void f() {}
+    public static void f() {
+    }
 }
 
 class B extends A {
-    public void f() {
+    public static void f() {
         assert false;
     }
 }

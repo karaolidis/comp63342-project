@@ -1,5 +1,5 @@
 public class StringIndexMethods01 {
-  public void test(String letters) {
+  public static void test(String letters) {
     assert letters.indexOf('c') == 8;
     assert letters.indexOf('a', 1) == 5;
     assert letters.indexOf('$') == -1;

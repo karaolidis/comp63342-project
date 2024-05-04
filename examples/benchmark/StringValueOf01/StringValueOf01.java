@@ -1,5 +1,6 @@
 public class StringValueOf01 {
-  public void test(char[] charArray, boolean booleanValue, char characterValue, int integerValue, long longValue, float floatValue, double doubleValue, Object objectRef) {
+  public static void test(char[] charArray, boolean booleanValue, char characterValue, int integerValue, long longValue,
+      float floatValue, double doubleValue, Object objectRef) {
 
     String tmp = String.valueOf(charArray);
     assert tmp.equals("diffblue");

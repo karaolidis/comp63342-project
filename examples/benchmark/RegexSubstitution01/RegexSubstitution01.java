@@ -1,13 +1,13 @@
 import java.util.Arrays;
 
 public class RegexSubstitution01 {
-  public void test(String firstString, String secondString) {
+  public static void test(String firstString, String secondString) {
     firstString = firstString.replaceAll("\\*", "^");
     assert firstString.equals("DiffBlue ^^^");
 
     secondString = secondString.replaceAll("Automatic", "Automated");
     System.out.printf("\"Automatic\" substituted for \"Automated\": %s\n", secondString);
-    
+
     System.out.printf(
         "Every word replaced by \"word\": %s\n\n", firstString.replaceAll("\\w+", "word"));
 

@@ -1,5 +1,5 @@
 class store_load1 {
-  public void test() {
+  public static void test() {
     int a0 = 0;
     int a1 = 1;
     int a2 = 2;

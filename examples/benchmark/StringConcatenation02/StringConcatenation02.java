@@ -7,7 +7,7 @@
  * The benchmark was taken from the repo: 24 January 2018
  */
 public class StringConcatenation02 {
-  public void test(String s1, String s2) {
+  public static void test(String s1, String s2) {
     assert s1.equals(s1 + " ");
     assert s2.equals(s2);
   }

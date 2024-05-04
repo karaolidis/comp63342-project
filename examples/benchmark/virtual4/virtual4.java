@@ -3,17 +3,18 @@ interface A {
 }
 
 class B implements A {
-  public void f() {
+  public static void f() {
     assert false;
   }
 }
 
 class C implements A {
-  public void f() {}
+  public static void f() {
+  }
 }
 
 public class virtual4 {
-  public void test(A b, A c) {
+  public static void test(A b, A c) {
     c.f();
   }
 }

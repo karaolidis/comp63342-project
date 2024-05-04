@@ -5,7 +5,7 @@ class some_exception2 extends some_exception1 {
 };
 
 class catch1 {
-  public void test() {
+  public static void test() {
     try {
       throw new some_exception2();
     } catch (some_exception1 e) {

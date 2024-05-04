@@ -1,15 +1,14 @@
 public class StringBuilderInsertDelete03 {
-  public void test(
-        Object objectRef, 
-        String string, 
-        char[] charArray, 
-        boolean booleanValue, 
-        char characterValue, 
-        int integerValue, 
-        long longValue, 
-        float floatValue, 
-        double doubleValue
-    ) {
+  public static void test(
+      Object objectRef,
+      String string,
+      char[] charArray,
+      boolean booleanValue,
+      char characterValue,
+      int integerValue,
+      long longValue,
+      float floatValue,
+      double doubleValue) {
 
     StringBuilder buffer = new StringBuilder();
 

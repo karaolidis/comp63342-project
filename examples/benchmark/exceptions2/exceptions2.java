@@ -8,7 +8,7 @@ class C extends B {
 }
 
 public class exceptions2 {
-  public void test() {
+  public static void test() {
     try {
       B b = new B();
       throw b;

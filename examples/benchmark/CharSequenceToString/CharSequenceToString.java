@@ -1,5 +1,5 @@
 public class CharSequenceToString {
-  public void test(String arg) {
+  public static void test(String arg) {
     CharSequence cs = arg;
     String s = cs.toString();
     int i = -1;

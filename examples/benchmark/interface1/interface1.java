@@ -7,17 +7,18 @@
  * The benchmark was taken from the repo: 24 January 2018
  */
 interface A {
-  public void f();
+  public static void f();
 }
 
 class B implements A {
-  public void f() {
+  public static void f() {
     assert false; // should fail
   }
 }
 
 class C implements A {
-  public void f() {}
+  public static void f() {
+  }
 }
 
 class interface1 {

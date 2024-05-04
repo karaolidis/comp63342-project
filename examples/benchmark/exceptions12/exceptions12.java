@@ -15,7 +15,7 @@ class F {
 }
 
 public class exceptions12 {
-  public void test() {
+  public static void test() {
     F f = new F();
     f.foo();
   }

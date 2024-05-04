@@ -1,5 +1,5 @@
 public class boolean2 {
-  public void test(boolean b) {
+  public static void test(boolean b) {
     boolean result = f(b);
     assert result == !b;
   }

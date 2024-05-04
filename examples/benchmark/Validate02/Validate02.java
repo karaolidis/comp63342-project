@@ -1,5 +1,5 @@
 public class Validate02 {
-  public void test(String address, String city, String state, String zip, String phone) {
+  public static void test(String address, String city, String state, String zip, String phone) {
     if (!ValidateInput02.validateAddress(address)) {
       throw new AssertionError("Address validation failed.");
     } else if (!ValidateInput02.validateCity(city)) {

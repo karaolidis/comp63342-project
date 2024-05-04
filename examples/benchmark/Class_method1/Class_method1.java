@@ -1,5 +1,5 @@
 public class Class_method1 {
-  public void test(Class c, boolean b) {
+  public static void test(Class c, boolean b) {
     assert f(c, b);
   }
 

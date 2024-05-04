@@ -1,5 +1,5 @@
 public class ArrayIndexOutOfBoundsException2 {
-  public void test(int size) {
+  public static void test(int size) {
     if (size < 0)
       return;
 

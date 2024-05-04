@@ -3,7 +3,7 @@ class A {
 }
 
 public class NullPointerException2 {
-  public void test(A a) {
+  public static void test(A a) {
     if (a == null) {
       assert false; // Assertion to handle null case explicitly
     } else {

@@ -1,5 +1,5 @@
 public class StringStartEnd03 {
-  public void test(String string1, String string2, String string3, String string4) {
+  public static void test(String string1, String string2, String string3, String string4) {
     String[] strings = new String[4];
     strings[0] = string1;
     strings[1] = string2;
@@ -8,7 +8,8 @@ public class StringStartEnd03 {
 
     int i = 0;
     for (String string : strings) {
-      if (string.endsWith("ed")) ++i;
+      if (string.endsWith("ed"))
+        ++i;
     }
     assert i == 3;
   }

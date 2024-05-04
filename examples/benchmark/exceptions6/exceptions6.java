@@ -13,7 +13,7 @@ class C extends B {
 }
 
 public class exceptions6 {
-  public void test() {
+  public static void test() {
     try {
       int i = 0;
       throw new A();
