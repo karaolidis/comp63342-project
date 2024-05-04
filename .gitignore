@@ -13,3 +13,4 @@ target/
 *.class
 *CE*.java
 output.json
+*.log

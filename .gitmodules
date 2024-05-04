@@ -1,3 +1,6 @@
 [submodule "cbmc"]
 	path = cbmc
 	url = https://github.com/diffblue/cbmc.git
+[submodule "sv-benchmarks"]
+	path = sv-benchmarks
+	url = https://gitlab.com/sosy-lab/benchmarking/sv-benchmarks.git
