@@ -6,6 +6,7 @@ num_folders=0
 
 num_folders_with_timeout=0
 
+num_folders_with_no_failures=0
 num_folders_with_failures=0
 num_folders_with_errors=0
 
@@ -21,6 +22,7 @@ for folder in "$base_dir"/*/; do
 
         if grep -q "Timeout" "$stderr_file"; then
             num_folders_with_timeout=$((num_folders_with_timeout + 1))
+            continue
         fi
     fi
 
@@ -29,6 +31,10 @@ for folder in "$base_dir"/*/; do
         if [[ -n "$num_failures" && "$num_failures" -gt 0 ]]; then
             total_assertion_failures=$((total_assertion_failures + num_failures))
             num_folders_with_failures=$((num_folders_with_failures + 1))
+        fi
+
+        if [[ "$num_failures" -eq 0 ]]; then
+            num_folders_with_no_failures=$((num_folders_with_no_failures + 1))
         fi
 
         if grep -q "ERROR" "$stdout_file"; then
@@ -41,6 +47,7 @@ echo "Total number of folders: $num_folders"
 
 echo "Number of folders with timeout: $num_folders_with_timeout"
 
+echo "Number of folders with no assertion failures: $num_folders_with_no_failures"
 echo "Number of folders with at least one assertion failure: $num_folders_with_failures"
 echo "Number of folders with at least one error: $num_folders_with_errors"
 
