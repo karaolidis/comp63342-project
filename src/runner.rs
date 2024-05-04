@@ -41,15 +41,8 @@ pub fn run_jbmc(file: &Path, entrypoint: &str, jbmc_path: &Path, timeout: Durati
         .spawn()
         .expect("Failed to spawn JBMC");
 
-    if let Some(status) = proc.wait_timeout(timeout).unwrap() {
+    if proc.wait_timeout(timeout).unwrap().is_some() {
         let output = proc.wait_with_output().unwrap();
-
-        assert!(
-            status.success(),
-            "Failed to run JBMC: {}",
-            String::from_utf8_lossy(&output.stderr)
-        );
-
         let output = serde_json::from_slice::<Vec<Output>>(&output.stdout).unwrap();
 
         if let Some(e) = output.iter().find_map(|o| match o {
