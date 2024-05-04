@@ -5,7 +5,6 @@ base_dir="./examples/benchmark"
 num_folders=0
 
 num_folders_with_timeout=0
-num_folders_with_oom=0
 
 num_folders_with_failures=0
 num_folders_with_errors=0
@@ -22,10 +21,6 @@ for folder in "$base_dir"/*/; do
 
         if grep -q "Timeout" "$stderr_file"; then
             num_folders_with_timeout=$((num_folders_with_timeout + 1))
-        fi
-
-        if grep -q "Out of Memory" "$stderr_file"; then
-            num_folders_with_oom=$((num_folders_with_oom + 1))
         fi
     fi
 
@@ -45,7 +40,6 @@ done
 echo "Total number of folders: $num_folders"
 
 echo "Number of folders with timeout: $num_folders_with_timeout"
-echo "Number of folders with out of memory: $num_folders_with_oom"
 
 echo "Number of folders with at least one assertion failure: $num_folders_with_failures"
 echo "Number of folders with at least one error: $num_folders_with_errors"
