@@ -9,6 +9,7 @@ authors = ["Nikolaos Karaolidis <nick@karaolidis.com>"]
 
 [dependencies]
 clap = { version = "4.5.4", features = ["derive"] }
+dunce = "1.0.4"
 genco = "0.17.8"
 indexmap = "2.2.6"
 log = "0.4.21"

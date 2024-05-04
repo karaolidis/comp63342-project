@@ -10,6 +10,7 @@ use parser::parse_jdmc_output;
 use runner::{compile_java_class, run_jbmc};
 
 use clap::Parser;
+use dunce::canonicalize;
 use log::{error, info, warn};
 use pathsearch::find_executable_in_path;
 use std::{
@@ -71,8 +72,7 @@ fn main() {
 
     let args = Args::parse();
 
-    let mut file_path = Path::new(&args.file_path)
-        .canonicalize()
+    let mut file_path = canonicalize(Path::new(&args.file_path))
         .expect("Failed to canonicalize file path, ensure the file exists");
 
     if let Ok(p) = file_path.strip_prefix(r"\\?\") {
@@ -94,8 +94,8 @@ fn main() {
         }
     }
 
-    let mut javac_path = Path::new(&args.javac_path)
-        .canonicalize()
+    let mut javac_path = canonicalize(Path::new(&args.javac_path)
+        )
         .unwrap_or_else(|_| {
             find_executable_in_path(&args.javac_path).expect("Failed to find javac, ensure that the Java compiler is installed and accessible via the path in -c (--javac-path)")
         });
@@ -104,8 +104,8 @@ fn main() {
         javac_path = p.to_path_buf();
     }
 
-    let mut jbmc_path = Path::new(&args.jbmc_path)
-        .canonicalize()
+    let mut jbmc_path = canonicalize(Path::new(&args.jbmc_path)
+        )
         .unwrap_or_else(|_| find_executable_in_path(&args.jbmc_path).expect("Failed to find jbmc, ensure that JBMC is installed and accessible via the path in -j (--jbmc-path)"));
 
     if let Ok(p) = jbmc_path.strip_prefix(r"\\?\") {
