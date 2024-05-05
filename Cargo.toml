@@ -3,12 +3,17 @@ name = "jbmc-counterexample"
 version = "0.1.0"
 edition = "2021"
 description = "A tool to extract counterexamples from JBMC output"
-authors = ["Nikolaos Karaolidis <nick@karaolidis.com>"]
+authors = [
+    "Nikolaos Karaolidis <nick@karaolidis.com>",
+]
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
 [dependencies]
-clap = { version = "4.5.4", features = ["derive"] }
+clap = { version = "4.5.4", features = [
+    "derive",
+    "wrap_help",
+] }
 dunce = "1.0.4"
 genco = "0.17.8"
 indexmap = "2.2.6"
@@ -19,4 +24,10 @@ regex = "1.10.4"
 serde = "1.0.198"
 serde-aux = "4.5.0"
 serde_json = "1.0.116"
-wait-timeout = "0.2.0"
+tokio = { version = "1.37.0", features = [
+    "macros",
+    "rt-multi-thread",
+    "sync",
+    "process",
+    "time",
+] }
