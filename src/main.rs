@@ -3,6 +3,7 @@
 
 mod codegen;
 mod jbmc;
+mod logger;
 mod parser;
 mod runner;
 
@@ -53,30 +54,8 @@ struct Args {
 }
 
 #[tokio::main]
-#[allow(clippy::too_many_lines)]
 async fn main() {
-    log4rs::init_config(
-        log4rs::Config::builder()
-            .appender(
-                log4rs::config::Appender::builder().build(
-                    "stdout",
-                    Box::new(
-                        log4rs::append::console::ConsoleAppender::builder()
-                            .encoder(Box::new(log4rs::encode::pattern::PatternEncoder::new(
-                                "{d} {h({l})} {M}::{L} - {m}{n}",
-                            )))
-                            .build(),
-                    ),
-                ),
-            )
-            .build(
-                log4rs::config::Root::builder()
-                    .appender("stdout")
-                    .build(log::LevelFilter::Info),
-            )
-            .unwrap(),
-    )
-    .unwrap();
+    logger::init();
 
     let args = Args::parse();
 
@@ -173,44 +152,58 @@ async fn main() {
         let javac_path = javac_path.clone();
         let jbmc_path = jbmc_path.clone();
 
-        let permit = semaphore.clone().acquire_owned().await.unwrap();
-
-        let task = spawn(async move {
-            let _permit = permit;
-
-            compile_java_class(&file_path, &javac_path, timeout).await;
-            let class = file_path.file_stem().unwrap().to_str().unwrap();
-
-            let output = run_jbmc(&file_path, &entrypoint, &jbmc_path, timeout).await;
-
-            if let Err(e) = output {
-                error!("JBMC error: {}", e);
-                return;
-            }
-
-            let counterexamples = parse_jdmc_output(output.unwrap(), class, &entrypoint);
-
-            for (i, counterexample) in counterexamples.into_iter().enumerate() {
-                match counterexample {
-                    Ok(counterexample) => {
-                        let file = file_path.with_file_name(format!("{class}CE_{i}.java"));
-                        let result = fs::write(&file, counterexample);
-
-                        if let Err(e) = result {
-                            error!("Failed to write counterexample to file: {}", e);
-                        }
-                    }
-                    Err(e) => {
-                        error!("Failed to generate counterexample: {}", e);
-                    }
-                }
-            }
-        });
+        let task = spawn(execute(
+            file_path,
+            entrypoint,
+            javac_path,
+            jbmc_path,
+            timeout,
+            semaphore.clone(),
+        ));
 
         tasks.push(task);
     }
 
     for task in tasks {
         task.await.unwrap();
+    }
+}
+
+async fn execute(
+    file_path: PathBuf,
+    entrypoint: String,
+    javac_path: PathBuf,
+    jbmc_path: PathBuf,
+    timeout: Duration,
+    semaphore: Arc<Semaphore>,
+) {
+    let _permit = semaphore.acquire_owned().await.unwrap();
+
+    compile_java_class(&file_path, &javac_path, timeout).await;
+    let class = file_path.file_stem().unwrap().to_str().unwrap();
+
+    let output = run_jbmc(&file_path, &entrypoint, &jbmc_path, timeout).await;
+
+    if let Err(e) = output {
+        error!("JBMC error: {}", e);
+        return;
+    }
+
+    let counterexamples = parse_jdmc_output(output.unwrap(), class, &entrypoint);
+
+    for (i, counterexample) in counterexamples.into_iter().enumerate() {
+        match counterexample {
+            Ok(counterexample) => {
+                let file = file_path.with_file_name(format!("{class}CE_{i}.java"));
+                let result = fs::write(&file, counterexample);
+
+                if let Err(e) = result {
+                    error!("Failed to write counterexample to file: {}", e);
+                }
+            }
+            Err(e) => {
+                error!("Failed to generate counterexample: {}", e);
+            }
+        }
     }
 }
