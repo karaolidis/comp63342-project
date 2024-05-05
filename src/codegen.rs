@@ -12,7 +12,7 @@ pub fn generate_counterexamples(
     output: Vec<Output>,
     class: &str,
     entrypoint: &str,
-) -> Vec<Result<String, Box<dyn Error + Send + Sync>>> {
+) -> Vec<Result<(String, String), Box<dyn Error + Send + Sync>>> {
     output
         .into_iter()
         .filter_map(|o| match o {
@@ -36,19 +36,21 @@ pub fn generate_counterexample(
     traces: Vec<Trace>,
     class: &str,
     entrypoint: &str,
-) -> Result<String, Box<dyn Error + Send + Sync>> {
+) -> Result<(String, String), Box<dyn Error + Send + Sync>> {
     let traces = traces.into_iter().filter(|t| !t.hidden).collect::<Vec<_>>();
     let mut body: java::Tokens = quote! {};
 
-    let mut function_call_is_last = false;
+    let mut done = false;
+    let mut function_call_name = None;
     let mut function_call_params = vec![];
+    let mut reason = None;
 
     for (index, trace) in traces.iter().cloned().enumerate() {
         let next_trace = traces.get(index + 1);
 
         match trace.variant {
             trace::Variant::Assignment(assignment) => {
-                if !assignment.lhs.starts_with("arg") {
+                if !assignment.lhs.starts_with("arg") || done {
                     continue;
                 }
 
@@ -144,16 +146,18 @@ pub fn generate_counterexample(
                            ($(function_call_params.join(", ")));$['\n']
                         });
 
-                        if function_call_is_last {
-                            break;
-                        }
-
                         function_call_params.clear();
+
+                        if let Some(function_call_name) = function_call_name.take() {
+                            if function_call_name == entrypoint {
+                                done = true;
+                            }
+                        }
                     }
                 }
             }
             trace::Variant::FunctionCall(function_call) => {
-                if !function_call.function.identifier.starts_with("java::") {
+                if !function_call.function.identifier.starts_with("java::") || done {
                     continue;
                 }
 
@@ -175,11 +179,18 @@ pub fn generate_counterexample(
                     $['\n']$capture_class.$capture_function
                 });
 
-                if capture_class == class && capture_function == entrypoint {
-                    function_call_is_last = true;
-                }
+                function_call_name = Some(capture_function.to_string());
             }
-            _ => {}
+            trace::Variant::Failure(failure) => {
+                reason = Some(failure
+                    .property
+                    .as_str()
+                    .split('.')
+                    .nth_back(1)
+                    .unwrap()
+                    .to_string());
+            }
+            trace::Variant::Other => {}
         }
     }
 
@@ -191,5 +202,8 @@ pub fn generate_counterexample(
         }
     };
 
-    Ok(tokens.to_file_string()?)
+    Ok((
+        tokens.to_file_string().unwrap(),
+        reason.unwrap_or_else(|| String::from("Unknown")),
+    ))
 }

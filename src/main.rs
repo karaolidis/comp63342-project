@@ -14,6 +14,7 @@ use clap::Parser;
 use dunce::canonicalize;
 use pathsearch::find_executable_in_path;
 use std::{
+    collections::HashMap,
     fs,
     path::{Path, PathBuf},
     process::Command,
@@ -65,6 +66,7 @@ struct Stats {
     analyzed: usize,
     counterexamples: usize,
     successful_counterexamples: usize,
+    vulnerabilities: HashMap<String, usize>,
 }
 
 #[tokio::main]
@@ -234,11 +236,7 @@ async fn main() {
 
     let stats = stats.lock().await;
 
-    println!(
-        "      {} Total paths: {}",
-        Emoji("📊", "[I]"),
-        stats.paths
-    );
+    println!("      {} Total paths: {}", Emoji("📊", "[I]"), stats.paths);
 
     println!(
         "      {} Total compiled: {}",
@@ -263,6 +261,15 @@ async fn main() {
         Emoji("📊", "[I]"),
         stats.successful_counterexamples
     );
+    
+    println!(
+        "      {} Vulnerabilities Generated:",
+        Emoji("📊", "[I]")
+    );
+
+    for (vulnerability, count) in &stats.vulnerabilities {
+        println!("         {}: {}", vulnerability, count);
+    }
 }
 
 #[allow(clippy::too_many_arguments)]
@@ -338,13 +345,20 @@ async fn execute(
 
     for (i, counterexample) in counterexamples.into_iter().enumerate() {
         match counterexample {
-            Ok(counterexample) => {
-                let file = file_path.with_file_name(format!("{class}CE_{i}.java"));
+            Ok((counterexample, reason)) => {
+
+                // Add the vulnerability reason to the file name of the counter example
+                let reason_snake_case = reason.replace("-", "_");
+                let file = file_path.with_file_name(format!("{class}CE_{reason_snake_case}_{i}.java"));
                 let result = fs::write(&file, counterexample);
 
                 match result {
                     Ok(()) => {
-                        stats.lock().await.successful_counterexamples += 1;
+                        let mut stats = stats.lock().await;
+                        stats.successful_counterexamples += 1;
+                        *stats.vulnerabilities.entry(reason).or_insert(0) += 1;
+                        drop(stats);
+
                         task_progress.println(format!(
                             "      {} {short_file_path:?}: Counterexample written to file {:?}",
                             Emoji("🎯", "[I]"),

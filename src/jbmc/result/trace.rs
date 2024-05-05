@@ -65,4 +65,5 @@ pub struct Function {
 #[derive(Deserialize, PartialEq, Eq, Clone, Debug)]
 pub struct Failure {
     pub reason: String,
+    pub property: String,
 }
