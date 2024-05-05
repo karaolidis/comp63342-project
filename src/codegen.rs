@@ -182,13 +182,15 @@ pub fn generate_counterexample(
                 function_call_name = Some(capture_function.to_string());
             }
             trace::Variant::Failure(failure) => {
-                reason = Some(failure
-                    .property
-                    .as_str()
-                    .split('.')
-                    .nth_back(1)
-                    .unwrap()
-                    .to_string());
+                reason = Some(
+                    failure
+                        .property
+                        .as_str()
+                        .split('.')
+                        .nth_back(1)
+                        .unwrap()
+                        .to_string(),
+                );
             }
             trace::Variant::Other => {}
         }
@@ -204,6 +206,6 @@ pub fn generate_counterexample(
 
     Ok((
         tokens.to_file_string().unwrap(),
-        reason.unwrap_or_else(|| String::from("Unknown")),
+        reason.unwrap_or_else(|| String::from("unknown")),
     ))
 }

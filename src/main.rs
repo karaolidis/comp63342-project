@@ -264,7 +264,7 @@ async fn main() {
     );
 
     for (vulnerability, count) in &stats.vulnerabilities {
-        println!("         {}: {}", vulnerability, count);
+        println!("          - {vulnerability}: {count}");
     }
 }
 
@@ -342,10 +342,7 @@ async fn execute(
     for (i, counterexample) in counterexamples.into_iter().enumerate() {
         match counterexample {
             Ok((counterexample, reason)) => {
-
-                // Add the vulnerability reason to the file name of the counter example
-                let reason_snake_case = reason.replace("-", "_");
-                let file = file_path.with_file_name(format!("{class}CE_{reason_snake_case}_{i}.java"));
+                let file = file_path.with_file_name(format!("{class}-CE-{i}-{reason}.java"));
                 let result = fs::write(&file, counterexample);
 
                 match result {
