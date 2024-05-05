@@ -6,23 +6,22 @@ client = OpenAI(api_key=os.getenv("OPENAI_API_KEY"))
 source_folder = "./sv-benchmarks/java/jbmc-regression"
 target_folder = "./examples/benchmark"
 
-def migrate_file(file_path, subfolder_name):
-    with open(file_path, "r") as f:
-        content = f.read()
-
+def migrate_file(content, subfolder_name):
     prompt = f"""
     Migrate the following Java code to:
 
     1. Convert any usage of `import org.sosy_lab.sv_benchmarks.Verifier;` into function parameters.
     2. Change the class name (and file name) from `Main` to `{subfolder_name}`.
     3. Change the entry point function from `main(String[] args)` to `test` function with appropriate parameters.
-    4. Remove any unecessary try-catch blocks that only lead to false assertions, but keep other fault assertions.
+    4. Change the entry point function and any other functions to public static if they aren't already, as long as it doesn't change the semantics.
 
     You may return only code, without any additional text explanation, or markdown.
 
     Input Java code:
 
+    ```java
     {content}
+    ```
     """
 
     response = client.chat.completions.create(model="gpt-4-turbo",
@@ -33,8 +32,8 @@ def migrate_file(file_path, subfolder_name):
 
     return response.choices[0].message.content
 
-def migrate_file_runner(file_path, subfolder_name):
-    new_content = migrate_file(file_path, subfolder_name)
+def migrate_file_runner(content, subfolder_name):
+    new_content = migrate_file(content, subfolder_name)
 
     new_content = new_content.replace("```java", "").replace("```", "")
     new_content = new_content.strip()
@@ -48,15 +47,27 @@ def migrate_file_runner(file_path, subfolder_name):
     with open(new_file_path, "w") as f:
         f.write(new_content)
 
-    print(f"Migrated {file_path} to {new_file_path}")
-
 with ThreadPoolExecutor() as executor:
     for subdir, _, files in os.walk(source_folder):
+        content = ""
+
         for file in files:
-            if file != "Main.java":
-                print(f"Skipping {file}")
+            if not file.endswith(".java"):
                 continue
 
+            with open(os.path.join(subdir, file), "r") as f:
+                text = f.read()
+
+            text = text.split("*/", 1)
+
+            if len(text) > 1:
+                text = text[1]
+            else:
+                text = text[0]
+
+            content += text
+            content += "\n"
+
+        if content:
             subfolder_name = os.path.basename(subdir)
-            file_path = os.path.join(subdir, file)
-            executor.submit(migrate_file_runner, file_path, subfolder_name)
+            executor.submit(migrate_file_runner, content, subfolder_name)

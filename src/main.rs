@@ -3,16 +3,16 @@
 
 mod codegen;
 mod jbmc;
-mod logger;
 mod parser;
 mod runner;
 
+use console::{style, Emoji};
+use indicatif::{MultiProgress, ProgressBar, ProgressStyle};
 use parser::parse_jdmc_output;
 use runner::{compile_java_class, run_jbmc};
 
 use clap::Parser;
 use dunce::canonicalize;
-use log::{error, info, warn};
 use pathsearch::find_executable_in_path;
 use std::{
     fs,
@@ -21,7 +21,13 @@ use std::{
     sync::Arc,
     time::Duration,
 };
-use tokio::{spawn, sync::Semaphore, task::JoinHandle};
+use tokio::{
+    spawn,
+    sync::{OwnedSemaphorePermit, Semaphore},
+    task::JoinHandle,
+};
+
+const TICK_INTERVAL: Duration = Duration::from_millis(100);
 
 #[derive(Parser, Debug)]
 #[command(version, about, long_about = None, author)]
@@ -54,22 +60,24 @@ struct Args {
 }
 
 #[tokio::main]
+#[allow(clippy::too_many_lines)]
 async fn main() {
-    logger::init();
-
+    let progress = MultiProgress::new();
     let args = Args::parse();
 
-    let javac_path = canonicalize(Path::new(&args.javac_path)
-        )
-        .unwrap_or_else(|_| {
-            find_executable_in_path(&args.javac_path).expect("Failed to find javac, ensure that the Java compiler is installed and accessible via the path in -c (--javac-path)")
-        });
-
-    let jbmc_path = canonicalize(Path::new(&args.jbmc_path)
-        )
-        .unwrap_or_else(|_| find_executable_in_path(&args.jbmc_path).expect("Failed to find jbmc, ensure that JBMC is installed and accessible via the path in -j (--jbmc-path)"));
-
     let timeout = Duration::from_secs(args.timeout.try_into().unwrap());
+
+    println!(
+        "{} {} Resolving dependencies...",
+        style("[1/4]").bold().dim(),
+        Emoji("🔍", "[I]")
+    );
+
+    let javac_path = canonicalize(Path::new(&args.javac_path))
+        .unwrap_or_else(|_| find_executable_in_path(&args.javac_path).expect("Failed to find javac, ensure that the Java compiler is installed and accessible via the path in -c (--javac-path)"));
+
+    let jbmc_path = canonicalize(Path::new(&args.jbmc_path))
+        .unwrap_or_else(|_| find_executable_in_path(&args.jbmc_path).expect("Failed to find jbmc, ensure that JBMC is installed and accessible via the path in -j (--jbmc-path)"));
 
     let javac_output = Command::new(&javac_path)
         .arg("--version")
@@ -80,10 +88,17 @@ async fn main() {
         .trim()
         .to_string();
 
-    info!("Java compiler version: {}", javac_version);
+    println!(
+        "      {} Java compiler version: {}",
+        Emoji("🔍", "[I]"),
+        javac_version
+    );
 
     if !javac_version.contains(" 17.") {
-        warn!("JBMC may not work as expected with Java versions other than 17");
+        println!(
+            "      {} JBMC may not work as expected with Java versions other than 17",
+            Emoji("⚠", "[W]")
+        );
     }
 
     let jbmc_output = Command::new(&jbmc_path)
@@ -95,7 +110,17 @@ async fn main() {
         .trim()
         .to_string();
 
-    info!("JBMC version: {}", jbmc_version);
+    println!(
+        "      {} JBMC version: {}",
+        Emoji("🔍", "[I] "),
+        jbmc_version
+    );
+
+    println!(
+        "{} {} Analyzing Java files...",
+        style("[2/4]").bold().dim(),
+        Emoji("🧪", "[I]"),
+    );
 
     let (file_paths, entrypoints): (Vec<PathBuf>, Vec<String>) = args
         .file_paths
@@ -116,17 +141,22 @@ async fn main() {
                 (Path::new(fpe).to_path_buf(), args.entrypoint.clone())
             };
 
-            let canonical = canonicalize(&file_path);
+            let canonical_file_path = canonicalize(&file_path);
+            let short_file_path = file_path.file_name().unwrap();
 
-            if let Err(e) = canonical {
-                error!("Failed to canonicalize file path {file_path:?}: {e}",);
+            if let Err(e) = canonical_file_path {
+                println!(
+                    "      {} File {:?}: {e}",
+                    Emoji("💥", "[E]"),
+                    short_file_path
+                );
                 return None;
             }
 
-            let mut file_path = canonical.unwrap();
+            let mut file_path = canonical_file_path.unwrap();
 
             if file_path.is_dir() {
-                let folder_name = file_path.file_name().unwrap().to_str().unwrap();
+                let folder_name = short_file_path.to_str().unwrap();
 
                 let main_file = file_path.join("Main.java");
                 let folder_file = file_path.join(format!("{folder_name}.java"));
@@ -136,29 +166,42 @@ async fn main() {
                 } else if folder_file.exists() {
                     file_path = canonicalize(&folder_file).unwrap();
                 } else {
-                    error!("No Main.java or {folder_name}.java found in {file_path:?}");
+                    println!(
+                        r#"      {} Folder {folder_name:?}: No "Main.java" or "{folder_name}.java" found"#,
+                        Emoji("💥", "[E]"),
+                    );
                     return None;
                 }
             }
+
+            println!(
+                "      {} File: {:?}, Function: {entrypoint:?}",
+                Emoji("🧪", "[I]"),
+                short_file_path,
+            );
 
             Some((file_path, entrypoint))
         })
         .unzip();
 
+    println!(
+        "{} {} Executing...",
+        style("[3/4]").bold().dim(),
+        Emoji("🚀", "[I]"),
+    );
+
     let mut tasks: Vec<JoinHandle<()>> = Vec::new();
     let semaphore = Arc::new(Semaphore::new(args.threads));
 
     for (file_path, entrypoint) in file_paths.into_iter().zip(entrypoints) {
-        let javac_path = javac_path.clone();
-        let jbmc_path = jbmc_path.clone();
-
         let task = spawn(execute(
             file_path,
             entrypoint,
-            javac_path,
-            jbmc_path,
+            javac_path.clone(),
+            jbmc_path.clone(),
             timeout,
-            semaphore.clone(),
+            semaphore.clone().acquire_owned().await.unwrap(),
+            progress.clone(),
         ));
 
         tasks.push(task);
@@ -167,6 +210,12 @@ async fn main() {
     for task in tasks {
         task.await.unwrap();
     }
+
+    println!(
+        "{} {} Done!",
+        style("[4/4]").bold().dim(),
+        Emoji("🎉", "[I]")
+    );
 }
 
 async fn execute(
@@ -175,21 +224,67 @@ async fn execute(
     javac_path: PathBuf,
     jbmc_path: PathBuf,
     timeout: Duration,
-    semaphore: Arc<Semaphore>,
+    permit: OwnedSemaphorePermit,
+    progress: MultiProgress,
 ) {
-    let _permit = semaphore.acquire_owned().await.unwrap();
+    let _permit = permit;
+    let short_file_path = file_path.file_name().unwrap().to_str().unwrap();
 
-    compile_java_class(&file_path, &javac_path, timeout).await;
+    let task_progress = ProgressBar::new_spinner();
+    task_progress.enable_steady_tick(TICK_INTERVAL);
+    task_progress.set_style(
+        ProgressStyle::with_template("      {spinner} {msg} [{elapsed}]")
+            .unwrap()
+            .tick_chars("⠁⠂⠄⡀⢀⠠⠐⠈ "),
+    );
+    progress.add(task_progress.clone());
+
+    task_progress.set_message(format!("{short_file_path:?} - Compiling..."));
+
+    let output = compile_java_class(&file_path, &javac_path, timeout).await;
+
+    if let Err(e) = output {
+        task_progress.println(format!(
+            "      {} {short_file_path:?}: Failed to compile: {e}",
+            Emoji("💥", "[E]"),
+        ));
+        task_progress.finish_and_clear();
+        return;
+    }
+
     let class = file_path.file_stem().unwrap().to_str().unwrap();
+
+    task_progress.set_message(format!("{short_file_path:?} - Analyzing..."));
 
     let output = run_jbmc(&file_path, &entrypoint, &jbmc_path, timeout).await;
 
     if let Err(e) = output {
-        error!("JBMC error: {}", e);
+        task_progress.println(format!(
+            "      {} {short_file_path:?}: Failed to analyze: {e}",
+            Emoji("💥", "[E]"),
+        ));
+        task_progress.finish_and_clear();
         return;
     }
 
-    let counterexamples = parse_jdmc_output(output.unwrap(), class, &entrypoint);
+    let output = output.unwrap();
+
+    task_progress.set_message(format!(
+        "{short_file_path:?} - Generating counterexamples..."
+    ));
+
+    let counterexamples = parse_jdmc_output(output, class, &entrypoint);
+
+    if counterexamples.is_empty() {
+        task_progress.println(format!(
+            "      {} {short_file_path:?}: No counterexamples found",
+            Emoji("✅", "[I]"),
+        ));
+        task_progress.finish_and_clear();
+        return;
+    }
+
+    task_progress.set_message(format!("{short_file_path:?} - Writing counterexamples..."));
 
     for (i, counterexample) in counterexamples.into_iter().enumerate() {
         match counterexample {
@@ -197,13 +292,31 @@ async fn execute(
                 let file = file_path.with_file_name(format!("{class}CE_{i}.java"));
                 let result = fs::write(&file, counterexample);
 
-                if let Err(e) = result {
-                    error!("Failed to write counterexample to file: {}", e);
+                match result {
+                    Ok(()) => {
+                        task_progress.println(format!(
+                            "      {} {short_file_path:?}: Counterexample written to file {:?}",
+                            Emoji("🎯", "[I]"),
+                            file.file_name().unwrap(),
+                        ));
+                    }
+                    Err(e) => {
+                        task_progress.println(format!(
+                            "      {} {short_file_path:?}: Failed to write counterexample to file {:?}: {e}",
+                            Emoji("💥", "[E]"),
+                            file.file_name().unwrap(),
+                        ));
+                    }
                 }
             }
             Err(e) => {
-                error!("Failed to generate counterexample: {}", e);
+                task_progress.println(format!(
+                    "      {} {short_file_path:?}: Failed to generate counterexample: {e}",
+                    Emoji("💥", "[E]"),
+                ));
             }
         }
     }
+
+    task_progress.finish_and_clear();
 }

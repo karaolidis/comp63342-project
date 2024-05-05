@@ -9,7 +9,7 @@ pub fn generate_counterexample(
     traces: Vec<Trace>,
     class: &str,
     entrypoint: &str,
-) -> Result<String, Box<dyn Error>> {
+) -> Result<String, Box<dyn Error + Send + Sync>> {
     let traces = traces.into_iter().filter(|t| !t.hidden).collect::<Vec<_>>();
     let mut body: java::Tokens = quote! {};
 
@@ -133,9 +133,13 @@ pub fn generate_counterexample(
                 let function_name_regex =
                     Regex::new(r"java::(?P<class>.+)\.(?P<function>.+):.*").unwrap();
 
-                let captures = function_name_regex
-                    .captures(&function_call.function.identifier)
-                    .unwrap();
+                let captures = function_name_regex.captures(&function_call.function.identifier);
+
+                if captures.is_none() {
+                    continue;
+                }
+
+                let captures = captures.unwrap();
 
                 let capture_class = captures.name("class").unwrap().as_str();
                 let capture_function = captures.name("function").unwrap().as_str();
