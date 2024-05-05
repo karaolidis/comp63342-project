@@ -1,5 +1,5 @@
 public class instanceof8 {
-  public static boolean test(Integer i) {
+  public static boolean testb(Integer i) {
     if (i instanceof Integer) {
       return true;
     } else {
@@ -8,7 +8,7 @@ public class instanceof8 {
   }
 
   public static void test() {
-    assert (!test(null));
-    assert (test(new Integer(1)));
+    assert (!testb(null));
+    assert (testb(new Integer(1)));
   }
 }
