@@ -1,4 +1,4 @@
-class multinewarray {
+public class multinewarray {
   public static void test(int x, int y) {
     int[][][] some_a = new int[4][3][2];
 

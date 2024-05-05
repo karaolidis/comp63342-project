@@ -1,5 +1,7 @@
 public class StringBuilderChars01 {
-  public static void test(StringBuilder buffer) {
+  public static void test() {
+    StringBuilder buffer = new StringBuilder("DiffBlue Limited");
+
     assert buffer.toString().equals("DiffBlue Limited");
     assert buffer.charAt(0) != buffer.charAt(4);
 

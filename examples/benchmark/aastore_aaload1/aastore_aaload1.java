@@ -4,8 +4,7 @@ public class aastore_aaload1 {
   }
 
   public static void test(int size) {
-    if (size < 0)
-      return;
+    if (size < 0) return;
     A[] array = new A[size];
 
     for (int i = 0; i < size; i++) {

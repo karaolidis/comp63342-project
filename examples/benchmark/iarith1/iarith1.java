@@ -15,7 +15,6 @@ class iarith1 {
     i %= 34;
     i = -i;
     assert i == -32;
-
     long l = 99;
     ++l;
     l += 2L;

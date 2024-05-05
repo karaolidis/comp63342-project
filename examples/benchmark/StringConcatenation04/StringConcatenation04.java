@@ -1,7 +1,7 @@
 public class StringConcatenation04 {
-    public static void test(String s1) {
-        String tmp = s1;
-        System.out.printf("s1 after concatenation = %s\n", s1);
-        assert tmp.equals("Happy at");
-    }
+  public static void test(String s1) {
+    String tmp = s1;
+    System.out.printf("s1 after concatenation = %s\n", s1);
+    assert tmp.equals("Happy  at");
+  }
 }

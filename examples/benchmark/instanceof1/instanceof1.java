@@ -1,4 +1,4 @@
-class instanceof1 {
+public class instanceof1 {
   public static void test(String[] args) {
     assert args instanceof Object;
   }

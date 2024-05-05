@@ -6,20 +6,21 @@ class A extends RuntimeException {
   }
 }
 
-class B extends A {
-}
+class B extends A {}
 
-class C extends B {
-}
+class C extends B {}
 
 public class exceptions6 {
   public static void test() {
     try {
-      int i = 0;
-      throw new A();
-    } catch (A exc) {
-      assert exc.i == 1; // Changed false assertion from exc.i == 2 to exc.i == 1 that matches the
-                         // initialized value in A's constructor
+      try {
+        int i = 0;
+        throw new A();
+      } catch (A exc) {
+        assert exc.i == 2;
+      }
+    } catch (B exc) {
+      assert exc.i == 2;
     }
   }
 }

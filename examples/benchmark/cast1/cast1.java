@@ -1,7 +1,6 @@
 class cast1 {
   public static void test(int i) {
-    if (i < -128 || i > 127)
-      return;
+    if (i < -128 || i > 127) return;
     byte b = (byte) i;
     assert b == i;
     short s = (short) i;

@@ -1,8 +1,12 @@
 public class calc {
-  static void do_stuff(String a, String b) {
-    int x = Integer.parseInt(a);
-    int y = Integer.parseInt(b);
-    assert Integer.parseInt(a) != Integer.parseInt(b) || x == y;
+  
+  public static void do_stuff(String a, String b) {
+    try {
+      int x = Integer.parseInt(a);
+      int y = Integer.parseInt(b);
+      assert Integer.parseInt(a) != Integer.parseInt(b) || x == y;
+    } catch (java.lang.NumberFormatException e) {
+    }
   }
 
   public static void test(int size, String arg1, String arg2) {

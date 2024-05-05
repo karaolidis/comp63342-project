@@ -1,11 +1,8 @@
-class A extends Throwable {
-}
+class A extends Throwable {}
 
-class B extends A {
-}
+class B extends A {}
 
-class C extends B {
-}
+class C extends B {}
 
 public class exceptions2 {
   public static void test() {
@@ -15,7 +12,7 @@ public class exceptions2 {
     } catch (C exc) {
       assert false;
     } catch (B exc) {
-
+      assert false;
     }
   }
 }

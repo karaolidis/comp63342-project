@@ -1,16 +1,22 @@
-class A extends RuntimeException {
-}
+class A extends RuntimeException {}
 
-class B extends A {
-}
+class B extends A {}
 
-class C extends B {
-}
+class C extends B {}
 
 public class exceptions16 {
-  public static void test(int x) {
-    x++; // increment x
+  public static void test(int nondetX) {
+    int x = nondetX;
+    try {
+      x++;
+    } catch (A exc) {
+      assert false;
+    }
 
-    throw new B();
+    try {
+      throw new B();
+    } catch (B exc) {
+      assert false;
+    }
   }
 }

@@ -1,11 +1,9 @@
-class A {
-}
+class A {}
 
-class B {
-}
+class B {}
 
 class if_acmp1 {
-  private static B get_B() {
+  public static B get_B() {
     B b = new B();
     return b;
   }

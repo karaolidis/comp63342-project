@@ -1,12 +1,12 @@
 public class ArrayIndexOutOfBoundsException1 {
+
   public static void test(int size) {
-    if (size < 0)
-      return;
-    int[] a = new int[4];
-    if (size >= 4) {
-      assert false;
-    } else {
+    if (size < 0) return;
+    try {
+      int[] a = new int[4];
       a[size] = 0;
+    } catch (ArrayIndexOutOfBoundsException exc) {
+      assert false;
     }
   }
 }

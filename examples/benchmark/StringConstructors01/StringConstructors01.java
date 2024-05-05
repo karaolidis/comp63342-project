@@ -1,7 +1,7 @@
 public class StringConstructors01 {
-  public static void test(char[] charArray, String initialString) {
+  public static void test(char[] charArray, String s) {
     String s1 = new String();
-    String s2 = new String(initialString);
+    String s2 = new String(s);
     String s3 = new String(charArray);
     String s4 = new String(charArray, 4, 4);
 

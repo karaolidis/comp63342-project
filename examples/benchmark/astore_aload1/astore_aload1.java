@@ -1,14 +1,5 @@
 class astore_aload1 {
-  public static void test(int size) {
-    boolean[] boolean_array = new boolean[size];
-    byte[] byte_array = new byte[size];
-    char[] char_array = new char[size];
-    short[] short_array = new short[size];
-    int[] int_array = new int[size];
-    long[] long_array = new long[size];
-    double[] double_array = new double[size];
-    float[] float_array = new float[size];
-
+  public static void test(int size, boolean[] boolean_array, byte[] byte_array, char[] char_array, short[] short_array, int[] int_array, long[] long_array, double[] double_array, float[] float_array) {
     for (int i = 0; i < size; i++) {
       boolean tmp = false;
       if (i % 2 == 0) {
@@ -37,7 +28,7 @@ class astore_aload1 {
     assert !boolean_array[9];
     assert 10 == byte_array.length;
     assert byte_array[0] == (byte) 0;
-    assert byte_arsray[1] == (byte) 1;
+    assert byte_array[1] == (byte) 1;
     assert byte_array[2] == (byte) 2;
     assert byte_array[3] == (byte) 3;
     assert byte_array[4] == (byte) 4;

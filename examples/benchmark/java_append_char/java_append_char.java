@@ -4,7 +4,6 @@ public class java_append_char {
     char[] blue = {'b', 'l', 'u', 'e'};
 
     StringBuilder buffer = new StringBuilder();
-
     buffer.append(diff).append(blue);
 
     String tmp = buffer.toString();

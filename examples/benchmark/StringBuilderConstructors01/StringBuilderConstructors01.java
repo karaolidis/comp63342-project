@@ -1,8 +1,6 @@
 public class StringBuilderConstructors01 {
-  public static void test(String nondetString) {
-    String arg = nondetString;
-    if (arg.length() < 1)
-      return;
+  public static void test(String arg) {
+    if (arg.length() < 1) return;
 
     StringBuilder buffer1 = new StringBuilder();
     StringBuilder buffer2 = new StringBuilder(10);

@@ -1,16 +1,15 @@
 interface A {
-  void f();
+  public void f();
 }
 
 class B implements A {
-  public static void f() {
+  public void f() {
     assert false;
   }
 }
 
 class C implements A {
-  public static void f() {
-  }
+  public void f() {}
 }
 
 public class virtual4 {

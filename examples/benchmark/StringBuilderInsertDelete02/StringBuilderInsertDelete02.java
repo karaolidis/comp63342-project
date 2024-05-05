@@ -1,7 +1,15 @@
 public class StringBuilderInsertDelete02 {
-  public static void test(Object objectRef, String string, char[] charArray, boolean booleanValue, 
-                          char characterValue, int integerValue, long longValue, 
-                          float floatValue, double doubleValue) {
+  public static void test(Object objectRef, String string) {
+    char[] charArray = {
+      'v', 'e', 'r', 'i', 'f', 'i',
+      'c', 'a', 't', 'i', 'o', 'n'
+    };
+    boolean booleanValue = true;
+    char characterValue = 'K';
+    int integerValue = 7;
+    long longValue = 10000000;
+    float floatValue = 2.5f;
+    double doubleValue = 33.333;
 
     StringBuilder buffer = new StringBuilder();
 

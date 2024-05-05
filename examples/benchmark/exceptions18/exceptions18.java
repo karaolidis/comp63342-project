@@ -1,11 +1,9 @@
-class A extends RuntimeException {
-}
+class A extends RuntimeException {}
 
-class B extends A {
-}
+class B extends A {}
 
 public class exceptions18 {
-  private static void foo() throws A {
+  private static void foo() {
     A a = new A();
     throw a;
   }
@@ -13,6 +11,7 @@ public class exceptions18 {
   public static void test() {
     try {
       foo();
+      assert false;
     } catch (B e) {
       assert false;
     } catch (A e) {

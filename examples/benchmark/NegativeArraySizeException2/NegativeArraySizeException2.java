@@ -1,5 +1,9 @@
 public class NegativeArraySizeException2 {
-  public static void test(int size) {
-    int a[] = new int[size];
+  public static void test() {
+    try {
+      int a[] = new int[-1];
+    } catch (Exception exc) {
+      assert false;
+    }
   }
 }

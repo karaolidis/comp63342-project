@@ -1,6 +1,7 @@
 public class StaticCharMethods06 {
+  
   public static void test(String arg) {
-    if (arg == null || arg.length() < 1) return;
+    if (arg.length() < 1) return;
 
     char c = arg.charAt(0);
     Character c1 = c;
@@ -8,6 +9,7 @@ public class StaticCharMethods06 {
 
     if (c1.equals(c2)) {
       System.out.println("c1 and c2 are equal\n");
+      assert true;
     } else {
       System.out.println("c1 and c2 are not equal\n");
       assert false;

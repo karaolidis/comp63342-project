@@ -1,4 +1,5 @@
 public class bitwise1 {
+
   static char c;
 
   public static void test(int nondetInt) {

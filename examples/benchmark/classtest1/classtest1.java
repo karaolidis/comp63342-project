@@ -1,9 +1,9 @@
 public class classtest1 {
-  public static void test(Object param) {
-    g(param);
+  public static void test() {
+    g(classtest1.class);
   }
 
-  static void g(Object c) {
+  public static void g(Object c) {
     assert true;
   }
 }

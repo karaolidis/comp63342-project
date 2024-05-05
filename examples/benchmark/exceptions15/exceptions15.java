@@ -1,8 +1,6 @@
-class InetAddress {
-}
+class InetAddress {}
 
-class InetSocketAddress {
-}
+class InetSocketAddress {}
 
 public class exceptions15 {
   public static String lookupPtrRecord(InetAddress address) {
@@ -13,8 +11,11 @@ public class exceptions15 {
     return address;
   }
 
-  public static void test() {
-    InetAddress address = new InetAddress();
-    String domainName = lookupPtrRecord(reverse(address));
+  public static void test(InetAddress address) {
+    try {
+      String domainName = lookupPtrRecord(reverse(address));
+    } catch (Exception e) {
+      assert false;
+    }
   }
 }

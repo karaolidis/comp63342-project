@@ -3,10 +3,12 @@ class A {
 }
 
 public class NullPointerException3 {
-  public static void test(A a) {
-    if (a == null) {
-      throw new NullPointerException();
+  public static void test() {
+    A a = null;
+    try {
+      int i = a.i;
+    } catch (NullPointerException exc) {
+      assert false;
     }
-    int i = a.i; // Use the object normally without a try-catch
   }
 }

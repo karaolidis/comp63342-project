@@ -22,7 +22,7 @@ class A3 extends A2 {
   }
 }
 
-class Inheritance1 {
+public class Inheritance1 {
   public static void test() {
     A3 a3 = new A3();
     assert a3.some_member == 1;

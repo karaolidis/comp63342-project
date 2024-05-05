@@ -1,15 +1,14 @@
 public class StringStartEnd03 {
-  public static void test(String string1, String string2, String string3, String string4) {
+  public static void test(String str1, String str2, String str3, String str4) {
     String[] strings = new String[4];
-    strings[0] = string1;
-    strings[1] = string2;
-    strings[2] = string3;
-    strings[3] = string4;
+    strings[0] = str1;
+    strings[1] = str2;
+    strings[2] = str3;
+    strings[3] = str4;
 
     int i = 0;
     for (String string : strings) {
-      if (string.endsWith("ed"))
-        ++i;
+      if (string.endsWith("ed")) ++i;
     }
     assert i == 3;
   }

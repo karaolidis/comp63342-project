@@ -1,6 +1,16 @@
 public class StringBuilderAppend02 {
-  public static void test(Object objectRef, String string, char[] charArray, boolean booleanValue, char characterValue,
-      int integerValue, long longValue, float floatValue, double doubleValue) {
+  public static void test(String objectRef, String string) {
+    char[] charArray = {
+      'v', 'e', 'r', 'i', 'f', 'i',
+      'c', 'a', 't', 'i', 'o', 'n'
+    };
+    boolean booleanValue = true;
+    char characterValue = 'Z';
+    int integerValue = 7;
+    long longValue = 10000000000L;
+    float floatValue = 2.5f;
+    double doubleValue = 33.333;
+
     StringBuilder lastBuffer = new StringBuilder("last buffer");
     StringBuilder buffer = new StringBuilder();
 
@@ -28,6 +38,7 @@ public class StringBuilderAppend02 {
         .append(lastBuffer);
 
     String tmp = buffer.toString();
-    assert tmp.equals("diffblue%ntest%nverification%nver%ntrue%n%Z%n7%n10000000000%n2.5%n33.333%nlast buffer");
+    assert tmp.equals(
+        "diffblue%ntest%nverification%nver%ntrue%n%Z%n7%n10000000000%n2.5%n33.333%nlast buffer");
   }
 }

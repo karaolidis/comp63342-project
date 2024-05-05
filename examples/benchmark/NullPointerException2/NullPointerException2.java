@@ -4,10 +4,10 @@ class A {
 
 public class NullPointerException2 {
   public static void test(A a) {
-    if (a == null) {
-      assert false; // Assertion to handle null case explicitly
-    } else {
+    try {
       a.i = 0;
+    } catch (NullPointerException exc) {
+      assert false;
     }
   }
 }

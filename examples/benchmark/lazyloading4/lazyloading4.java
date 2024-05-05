@@ -11,7 +11,7 @@ class Problem {
   }
 }
 
-public class lazyloading4 {
+public class LazyLoading4 {
   public static void test() {
     new Problem().checkInvariant();
   }

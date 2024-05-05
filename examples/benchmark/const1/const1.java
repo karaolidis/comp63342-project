@@ -1,4 +1,4 @@
-class const1 {
+public class const1 {
   public static void test() {
     assert 0.0f < 1.0f;
     assert 0.0 < 1.0;

@@ -1,8 +1,12 @@
-class A extends Exception {
-}
+class A extends Exception {}
 
 class athrow1 {
-  public static void test(A a) {
-    throw a;
+  public static void test() {
+    A a = new A();
+    try {
+      throw a;
+    } catch (Exception e) {
+      assert false;
+    }
   }
 }

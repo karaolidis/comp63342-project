@@ -1,25 +1,25 @@
-class A extends RuntimeException {
-}
+class A extends RuntimeException {}
 
-class B extends A {
-}
+class B extends A {}
 
-class C extends B {
-}
+class C extends B {}
 
 class F {
-  void foo() {
-    B b = new B();
-    throw b;
+  public static void foo() throws B {
+    try {
+      B b = new B();
+      throw b;
+    } catch (B exc) {
+      throw exc;
+    }
   }
 }
 
 public class exceptions13 {
 
   public static void test() {
-    F f = new F();
     try {
-      f.foo();
+      F.foo();
     } catch (B exc) {
       assert false;
     }

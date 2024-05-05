@@ -7,15 +7,15 @@ class overloading1 {
     assert (f(o) == 3);
   }
 
-  static int f(int i) {
+  public static int f(int i) {
     return 1;
   }
 
-  static int f(double d) {
+  public static int f(double d) {
     return 2;
   }
 
-  static int f(other_class o) {
+  public static int f(other_class o) {
     return 3;
   }
 }

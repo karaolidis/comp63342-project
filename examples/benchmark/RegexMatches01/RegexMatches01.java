@@ -2,10 +2,10 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class RegexMatches01 {
-  public static void test(String string1) {
-    Pattern expression = Pattern.compile("W.*\\d[0-35-9]-\\d\\d-\\d\\d");
+  public static void test(String inputString, String regex) {
+    Pattern expression = Pattern.compile(regex);
 
-    Matcher matcher = expression.matcher(string1);
+    Matcher matcher = expression.matcher(inputString);
 
     while (matcher.find()) {
       System.out.println(matcher.group());

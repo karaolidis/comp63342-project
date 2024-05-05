@@ -1,5 +1,5 @@
 class if_icmp1 {
-  private static void f(int i, int j) {
+  public static void f(int i, int j) {
     if (i == j) {
       assert false;
     }
@@ -21,9 +21,8 @@ class if_icmp1 {
     }
   }
 
-  public static void test(int i, int j) {
-    if (i + 1 < 0)
-      return;
-    f(i, j);
+  public static void test(int i) {
+    if (i + 1 < 0) return;
+    f(i, i + 1);
   }
 }

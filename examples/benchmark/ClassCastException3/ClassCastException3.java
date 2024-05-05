@@ -1,12 +1,14 @@
-class A {
-}
+class A {}
 
-class B {
-}
+class B {}
 
 public class ClassCastException3 {
   public static void test() {
-    Object a = new A();
-    B b = (B) a;
+    try {
+      Object a = new A();
+      B b = (B) a;
+    } catch (Exception exc) {
+      assert false;
+    }
   }
 }

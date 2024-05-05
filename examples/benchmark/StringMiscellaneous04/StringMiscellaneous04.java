@@ -1,10 +1,10 @@
 public class StringMiscellaneous04 {
-  // This is a model of the String.toCharArray method
+  // Model of the String.toCharArray method
   public static char[] toCharArray(String s) {
     int length = s.length();
     assert (length < 10);
     char arr[] = new char[s.length()];
-    // We limit arbitrarly the loop unfolding to 10
+    // Limit arbitrarily the loop unfolding to 10
     for (int i = 0; i < length && i < 10; i++) arr[i] = s.charAt(i);
     return arr;
   }
@@ -27,7 +27,7 @@ public class StringMiscellaneous04 {
     tmp = s3.trim();
     assert tmp.equals("automated");
 
-    // test toCharArray method
+    // Test toCharArray method
     char[] charArray = toCharArray(s1);
     System.out.print("s1 as a character array = ");
 

@@ -1,9 +1,8 @@
-class sub {
-};
+class sub {}
+;
 
 class A {
-  A() {
-  }
+  A() {}
 
   A(int param) {
     assert (my_field == 0);
@@ -14,7 +13,8 @@ class A {
   sub my_sub;
 
   static int something_static = 3;
-};
+}
+;
 
 class constructor1 {
   public static void test() {
@@ -26,4 +26,5 @@ class constructor1 {
     assert other_a.my_field == 2;
     assert other_a.my_sub == null;
   }
-};
+}
+;

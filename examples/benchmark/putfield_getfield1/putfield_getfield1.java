@@ -2,9 +2,10 @@ class A {
   public int i;
 }
 
-class putfield_getfield1 {
-  public static void test(A a) {
-    a.i = 999;
-    assert 999 == a.i;
+public class putfield_getfield1 {
+  public static void test(int value) {
+    A a = new A();
+    a.i = value;
+    assert value == a.i;
   }
 }

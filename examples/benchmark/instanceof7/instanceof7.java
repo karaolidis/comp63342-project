@@ -5,8 +5,6 @@ class instanceof7 {
   }
 }
 
-class A {
-}
+class A {}
 
-class B extends A {
-}
+class B extends A {}

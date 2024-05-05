@@ -1,15 +1,13 @@
-class A extends Throwable {
-}
+class A extends Throwable {}
 
-class B extends A {
-}
+class B extends A {}
 
-class C extends B {
-}
+class C extends B {}
 
 public class exceptions4 {
-  public static void test(B b) {
+  public static void test() {
     try {
+      B b = new B();
       throw b;
     } catch (C exc) {
       System.out.println("C");
