@@ -80,7 +80,7 @@ async fn main() {
     println!(
         "{} {} Resolving dependencies...",
         style("[1/4]").bold().dim(),
-        Emoji("🔍", "[I]")
+        Emoji(" 🔍 ", "[I]")
     );
 
     let javac_path = canonicalize(Path::new(&args.javac_path))
@@ -100,14 +100,14 @@ async fn main() {
 
     println!(
         "      {} Java compiler version: {}",
-        Emoji("🔍", "[I]"),
+        Emoji(" 🔍 ", "[I]"),
         javac_version
     );
 
     if !javac_version.contains(" 17.") {
         println!(
             "      {} JBMC may not work as expected with Java versions other than 17",
-            Emoji("⚠", "[W]")
+            Emoji(" ⚠ ", "[W]")
         );
     }
 
@@ -122,14 +122,14 @@ async fn main() {
 
     println!(
         "      {} JBMC version: {}",
-        Emoji("🔍", "[I] "),
+        Emoji(" 🔍 ", "[I] "),
         jbmc_version
     );
 
     println!(
         "{} {} Analyzing Java files...",
         style("[2/4]").bold().dim(),
-        Emoji("🧪", "[I]"),
+        Emoji(" 🧪 ", "[I]"),
     );
 
     let (file_paths, entrypoints): (Vec<PathBuf>, Vec<String>) = args
@@ -157,7 +157,7 @@ async fn main() {
             if let Err(e) = canonical_file_path {
                 println!(
                     "      {} File {:?}: {e}",
-                    Emoji("💥", "[E]"),
+                    Emoji(" 💥 ", "[E]"),
                     short_file_path
                 );
                 return None;
@@ -178,7 +178,7 @@ async fn main() {
                 } else {
                     println!(
                         r#"      {} Folder {folder_name:?}: No "Main.java" or "{folder_name}.java" found"#,
-                        Emoji("💥", "[E]"),
+                        Emoji(" 💥 ", "[E]"),
                     );
                     return None;
                 }
@@ -186,7 +186,7 @@ async fn main() {
 
             println!(
                 "      {} File: {:?}, Function: {entrypoint:?}",
-                Emoji("🧪", "[I]"),
+                Emoji(" 🧪 ", "[I]"),
                 short_file_path,
             );
 
@@ -197,7 +197,7 @@ async fn main() {
     println!(
         "{} {} Executing...",
         style("[3/4]").bold().dim(),
-        Emoji("🚀", "[I]"),
+        Emoji(" 🚀 ", "[I]"),
     );
 
     let mut tasks: Vec<JoinHandle<()>> = Vec::new();
@@ -231,37 +231,41 @@ async fn main() {
     println!(
         "{} {} Done!",
         style("[4/4]").bold().dim(),
-        Emoji("🎉", "[I]")
+        Emoji(" 🎉 ", "[I]")
     );
 
     let stats = stats.lock().await;
 
-    println!("      {} Total paths: {}", Emoji("📊", "[I]"), stats.paths);
+    println!(
+        "      {} Total paths: {}",
+        Emoji(" 📊 ", "[I]"),
+        stats.paths
+    );
 
     println!(
         "      {} Total compiled: {}",
-        Emoji("📊", "[I]"),
+        Emoji(" 📊 ", "[I]"),
         stats.compiled
     );
 
     println!(
         "      {} Total analyzed: {}",
-        Emoji("📊", "[I]"),
+        Emoji(" 📊 ", "[I]"),
         stats.analyzed
     );
 
     println!(
         "      {} Total counterexamples: {}",
-        Emoji("📊", "[I]"),
+        Emoji(" 📊 ", "[I]"),
         stats.counterexamples
     );
 
     println!(
         "      {} Total successful counterexamples: {}",
-        Emoji("📊", "[I]"),
+        Emoji(" 📊 ", "[I]"),
         stats.successful_counterexamples
     );
-    
+
     println!(
         "      {} Vulnerabilities Generated:",
         Emoji("📊", "[I]")
@@ -289,7 +293,7 @@ async fn execute(
     let task_progress = ProgressBar::new_spinner();
     task_progress.enable_steady_tick(TICK_INTERVAL);
     task_progress.set_style(
-        ProgressStyle::with_template("      {spinner} {msg} [{elapsed}]")
+        ProgressStyle::with_template("       {spinner}   {msg} [{elapsed}]")
             .unwrap()
             .tick_chars("⠁⠂⠄⡀⢀⠠⠐⠈ "),
     );
@@ -302,7 +306,7 @@ async fn execute(
     if let Err(e) = output {
         task_progress.println(format!(
             "      {} {short_file_path:?}: Failed to compile: {e}",
-            Emoji("💥", "[E]"),
+            Emoji(" 💥 ", "[E]"),
         ));
         task_progress.finish_and_clear();
         return;
@@ -317,7 +321,7 @@ async fn execute(
     if let Err(e) = output {
         task_progress.println(format!(
             "      {} {short_file_path:?}: Failed to analyze: {e}",
-            Emoji("💥", "[E]"),
+            Emoji(" 💥 ", "[E]"),
         ));
         task_progress.finish_and_clear();
         return;
@@ -334,7 +338,7 @@ async fn execute(
     if counterexamples.is_empty() {
         task_progress.println(format!(
             "      {} {short_file_path:?}: No counterexamples found",
-            Emoji("✅", "[I]"),
+            Emoji(" ✅ ", "[I]"),
         ));
         task_progress.finish_and_clear();
         return;
@@ -361,14 +365,14 @@ async fn execute(
 
                         task_progress.println(format!(
                             "      {} {short_file_path:?}: Counterexample written to file {:?}",
-                            Emoji("🎯", "[I]"),
+                            Emoji(" 🎯 ", "[I]"),
                             file.file_name().unwrap(),
                         ));
                     }
                     Err(e) => {
                         task_progress.println(format!(
                             "      {} {short_file_path:?}: Failed to write counterexample to file {:?}: {e}",
-                            Emoji("💥", "[E]"),
+                            Emoji(" 💥 ", "[E]"),
                             file.file_name().unwrap(),
                         ));
                     }
@@ -377,7 +381,7 @@ async fn execute(
             Err(e) => {
                 task_progress.println(format!(
                     "      {} {short_file_path:?}: Failed to generate counterexample: {e}",
-                    Emoji("💥", "[E]"),
+                    Emoji(" 💥 ", "[E]"),
                 ));
             }
         }
