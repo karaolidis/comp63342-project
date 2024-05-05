@@ -10,10 +10,8 @@ This project aims to automate benchmarks for Java Bytecode Model Checking (JBMC)
 
 - `runner.rs`: Module for controlling the overall model checking process.
 - `codegen.rs`: Module responsible for generating JBMC code.
-- `parser.rs`: Module containing logic for parsing input data.
 - `main.rs`: Entry point of the Rust-based checker.
 - `translate.py`: Python utility for additional translation needs.
-- `run-bench.sh`: Aggregates performance results.
 
 ## Prerequisites
 

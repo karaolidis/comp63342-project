@@ -3,12 +3,11 @@
 
 mod codegen;
 mod jbmc;
-mod parser;
 mod runner;
 
+use codegen::generate_counterexamples;
 use console::{style, Emoji};
 use indicatif::{MultiProgress, ProgressBar, ProgressStyle};
-use parser::parse_jdmc_output;
 use runner::{compile_java_class, run_jbmc};
 
 use clap::Parser;
@@ -23,7 +22,7 @@ use std::{
 };
 use tokio::{
     spawn,
-    sync::{OwnedSemaphorePermit, Semaphore},
+    sync::{Mutex, OwnedSemaphorePermit, Semaphore},
     task::JoinHandle,
 };
 
@@ -57,6 +56,15 @@ struct Args {
     /// Maximum number of threads to use
     #[arg(short = 'n', long, default_value = "1")]
     threads: usize,
+}
+
+#[derive(Debug, Default)]
+struct Stats {
+    paths: usize,
+    compiled: usize,
+    analyzed: usize,
+    counterexamples: usize,
+    successful_counterexamples: usize,
 }
 
 #[tokio::main]
@@ -192,6 +200,10 @@ async fn main() {
 
     let mut tasks: Vec<JoinHandle<()>> = Vec::new();
     let semaphore = Arc::new(Semaphore::new(args.threads));
+    let stats = Arc::new(Mutex::new(Stats {
+        paths: file_paths.len(),
+        ..Default::default()
+    }));
 
     for (file_path, entrypoint) in file_paths.into_iter().zip(entrypoints) {
         let task = spawn(execute(
@@ -202,6 +214,7 @@ async fn main() {
             timeout,
             semaphore.clone().acquire_owned().await.unwrap(),
             progress.clone(),
+            stats.clone(),
         ));
 
         tasks.push(task);
@@ -211,13 +224,48 @@ async fn main() {
         task.await.unwrap();
     }
 
+    progress.clear().unwrap();
+
     println!(
         "{} {} Done!",
         style("[4/4]").bold().dim(),
         Emoji("🎉", "[I]")
     );
+
+    let stats = stats.lock().await;
+
+    println!(
+        "      {} Total paths: {}",
+        Emoji("📊", "[I]"),
+        stats.paths
+    );
+
+    println!(
+        "      {} Total compiled: {}",
+        Emoji("📊", "[I]"),
+        stats.compiled
+    );
+
+    println!(
+        "      {} Total analyzed: {}",
+        Emoji("📊", "[I]"),
+        stats.analyzed
+    );
+
+    println!(
+        "      {} Total counterexamples: {}",
+        Emoji("📊", "[I]"),
+        stats.counterexamples
+    );
+
+    println!(
+        "      {} Total successful counterexamples: {}",
+        Emoji("📊", "[I]"),
+        stats.successful_counterexamples
+    );
 }
 
+#[allow(clippy::too_many_arguments)]
 async fn execute(
     file_path: PathBuf,
     entrypoint: String,
@@ -226,6 +274,7 @@ async fn execute(
     timeout: Duration,
     permit: OwnedSemaphorePermit,
     progress: MultiProgress,
+    stats: Arc<Mutex<Stats>>,
 ) {
     let _permit = permit;
     let short_file_path = file_path.file_name().unwrap().to_str().unwrap();
@@ -252,9 +301,9 @@ async fn execute(
         return;
     }
 
-    let class = file_path.file_stem().unwrap().to_str().unwrap();
-
+    stats.lock().await.compiled += 1;
     task_progress.set_message(format!("{short_file_path:?} - Analyzing..."));
+    let class = file_path.file_stem().unwrap().to_str().unwrap();
 
     let output = run_jbmc(&file_path, &entrypoint, &jbmc_path, timeout).await;
 
@@ -267,13 +316,13 @@ async fn execute(
         return;
     }
 
+    stats.lock().await.analyzed += 1;
     let output = output.unwrap();
-
     task_progress.set_message(format!(
         "{short_file_path:?} - Generating counterexamples..."
     ));
 
-    let counterexamples = parse_jdmc_output(output, class, &entrypoint);
+    let counterexamples = generate_counterexamples(output, class, &entrypoint);
 
     if counterexamples.is_empty() {
         task_progress.println(format!(
@@ -284,6 +333,7 @@ async fn execute(
         return;
     }
 
+    stats.lock().await.counterexamples += counterexamples.len();
     task_progress.set_message(format!("{short_file_path:?} - Writing counterexamples..."));
 
     for (i, counterexample) in counterexamples.into_iter().enumerate() {
@@ -294,6 +344,7 @@ async fn execute(
 
                 match result {
                     Ok(()) => {
+                        stats.lock().await.successful_counterexamples += 1;
                         task_progress.println(format!(
                             "      {} {short_file_path:?}: Counterexample written to file {:?}",
                             Emoji("🎯", "[I]"),
