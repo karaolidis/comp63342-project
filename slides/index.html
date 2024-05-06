@@ -1,0 +1,674 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+  <title>CounterStrike</title>
+
+  <link rel="stylesheet" href="dist/reset.css">
+  <link rel="stylesheet" href="dist/reveal.css">
+  <link rel="stylesheet" href="dist/theme/black.css">
+  <link rel="stylesheet" href="plugin/highlight/atom-one-dark.css">
+  <link rel="stylesheet" href="node_modules/@fortawesome/fontawesome-free/css/all.min.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/romkatv/powerlevel10k-media/MesloLGS%20NF%20Regular.ttf">
+
+  <style>
+    :root {
+      --r-main-color-darker: color-mix(in srgb, var(--r-main-color) 90%, black);
+      --r-main-color-darkest: color-mix(in srgb, var(--r-main-color) 25%, black);
+    }
+
+    .reveal i.fa {
+      font-family: FontAwesome;
+      font-style: normal;
+    }
+
+    .fragment.blur {
+      filter: none;
+    }
+
+    .fragment.blur.visible {
+      filter: blur(10px);
+    }
+
+    .monospace {
+      font-family: 'MesloLGS NF', monospace;
+    }
+
+    .dim {
+      opacity: 0.25;
+    }
+
+    img {
+      border-radius: 15px;
+    }
+
+    code {
+      font-size: 16px;
+      line-height: normal;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="reveal">
+    <div class="slides">
+      <section>
+        <h2>Understanding Programming Bugs in Java Using Counterexamples</h2>
+        <div style="display: flex; justify-content: center; align-items: center;">
+          <pre class="monospace" style="text-align: left; font-size: 8px; box-shadow: none; width: initial;">
+         #         #
+          #       #
+           #######
+         ##       ##           .-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-.
+         ##       ##           |  _________                      __                _________ __         .__ __             |
+           #######             !  \_   ___ \  ____  __ __  _____/  |_  ___________/   _____//  |________|__|  | __ ____    !
+         ###########           :  /    \  \/ /  _ \|  |  \/    \   __\/ __ \_  __ \_____  \\   __\_  __ \  |  |/ // __ \   :
+      ###   #####   ###        :  \     \___(  <_> )  |  /   |  \  | \  ___/|  | \/        \|  |  |  | \/  |    <\  ___/   :
+    ## #      #      # ##      !   \______  /\____/|____/|___|  /__|  \___  >__| /_______  /|__|  |__|  |__|__|_ \\___  >  !
+  #    # ########### #    #    |          \/                  \/          \/             \/                     \/    \/   |
+  ######             ######    .-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-.
+        ###       ###
+           #######
+          </pre>
+        </div>
+      </section>
+
+      <section>
+        <section data-auto-animate>
+          <h3>Introduction</h3>
+          <p>
+            <strong>JBMC</strong> is a Bounded Model Checker used to find vulnerabilities in Java programs.
+          </p>
+          <p class="fragment">
+            It combines BMC with SMT and symbolic execution to perform bit accurate verification on Java code. <a href="#/references">[1]</a>
+          </p>
+        </section>
+
+        <section data-auto-animate>
+          <h3>Introduction</h3>
+          <p>
+            <strong>Counterexamples</strong> are execution traces of the system produced by BMCs that illustrate how an error state can be reached from the initial state. <a href="#/references">[2]</a>
+          </p>
+          <p class="fragment">
+            They provide the user with information which can be used to debug their systems.
+          </p>
+        </section>
+      </section>
+
+      <section>
+        <h3>The Problem</h3>
+        <p>
+          The counterexamples produced by JBMC, especially for complex programs, are too long to parse, and the structure is difficult to understand.
+        </p>
+      </section>
+
+      <section>
+        <section data-auto-animate>
+          <h3>The Solution</h3>
+          <p>We developed a tool that:</p>
+          <ul>
+            <li class="fragment">Collects and manipulates JBMC traces</li>
+            <li class="fragment">Generates Java code using the traces to reproduce identified vulnerabilities</li>
+          </ul>
+        </section>
+
+        <section data-auto-animate>
+          <h3>The Solution</h3>
+          <p>Furthermore, we:</p>
+          <ul>
+            <li class="fragment">Evaluated the tool's effectiveness with benchmarks from the Software Verification Competition (SV-COMP)</li>
+            <li class="fragment">Compared our tool with other Java verifiers (JPF)</li>
+          </ul>
+        </section>
+      </section>
+
+      <section>
+        <h3>Implementation</h3>
+        <div class="r-stack">
+          <img data-src="./static/flow/1.png" style="background-color: var(--r-background-color);" />
+          <img data-src="./static/flow/2.png" class="fragment" style="background-color: var(--r-background-color);" />
+          <img data-src="./static/flow/3.png" class="fragment" style="background-color: var(--r-background-color);" />
+          <img data-src="./static/flow/4.png" class="fragment" style="background-color: var(--r-background-color);" />
+          <img data-src="./static/flow/5.png" class="fragment" style="background-color: var(--r-background-color);" />
+          <img data-src="./static/flow/6.png" class="fragment" style="background-color: var(--r-background-color);" />
+          <img data-src="./static/flow/7.png" class="fragment" style="background-color: var(--r-background-color);" />
+          <img data-src="./static/flow/8.png" class="fragment" style="background-color: var(--r-background-color);" />
+          <img data-src="./static/flow/9.png" class="fragment" style="background-color: var(--r-background-color);" />
+        </div>
+      </section>
+
+      <section data-auto-animate>
+        <h3>Why Rust?</h3>
+        <div class="fragment">
+          <img data-src="./static/cuddlyferris.svg" width="25%" />
+          <p class="dim"><small>Look at this adorable creature.</small></p>
+        </div>
+      </section>
+
+      <section>
+        <section data-auto-animate>
+          <h3>Modelling JBMC Output</h3>
+          <pre>
+            <code data-trim data-line-numbers data-ln-start-from="69">
+              <script type="text/template">
+  {
+    "assignmentType": "variable",
+    "hidden": false,
+    "internal": false,
+    "lhs": "$stack_tmp1",
+    "mode": "java",
+    "stepType": "assignment",
+    "thread": 0,
+    "value": {
+      "binary": "00000000000000000000000000000000",
+      "data": "0",
+      "name": "integer",
+      "type": "int",
+      "width": 32
+    }
+  }
+              </script>
+            </code>
+          </pre>
+          <p>🤔</p>
+        </section>
+
+        <section data-auto-animate>
+          <h3>Modelling JBMC Output</h3>
+          <pre>
+            <code data-trim data-line-numbers data-ln-start-from="420">
+              <script type="text/template">
+{
+  "stepType": "assignment",
+  "thread": 0,
+  "value": {
+    "binary": "00000000",
+    "data": "false",
+    "name": "integer",
+    "type": "const boolean",
+    "width": 8
+  }
+}
+              </script>
+            </code>
+          </pre>
+          <p>🤮</p>
+        </section>
+
+        <section data-auto-animate>
+          <h3>Modelling JBMC Output</h3>
+          <p>😍 <span class="monospace">serde_json</span> 😍</p>
+        </section>
+
+        <section data-auto-animate>
+          <h3>Modelling JBMC Output</h3>
+          <pre>
+            <code data-trim data-line-numbers="8-17">
+              <script type="text/template">
+#[derive(Deserialize, PartialEq, Clone, Debug)]
+pub struct Trace {
+    pub hidden: bool,
+    #[serde(flatten)]
+    pub variant: Variant,
+}
+
+#[derive(Deserialize, PartialEq, Clone, Debug)]
+#[serde(tag = "stepType")]
+#[serde(rename_all = "kebab-case")]
+pub enum Variant {
+    Assignment(Assignment),
+    FunctionCall(FunctionCall),
+    Failure(Failure),
+    #[serde(other)]
+    Other,
+}
+
+#[derive(Deserialize, PartialEq, Clone, Debug)]
+pub struct Assignment {
+    pub mode: Mode,
+    #[serde(rename = "assignmentType")]
+    pub variant: AssignmentVariant,
+    pub lhs: String,
+    pub value: Value,
+}
+
+...
+              </script>
+            </code>
+          </pre>
+          <p>😍 <span class="monospace">serde_json</span> 😍</p>
+        </section>
+
+        <section data-auto-animate>
+          <h3>Modelling JBMC Output</h3>
+          <pre>
+            <code data-trim data-line-numbers="22-35">
+              <script type="text/template">
+fn visit_map<A>(self, mut map: A) -> Result<i8, A::Error>
+where
+    A: MapAccess<'de>,
+{
+    let mut name: Option<serde_json::Value> = None;
+    let mut type_: Option<serde_json::Value> = None;
+    let mut width: Option<serde_json::Value> = None;
+    let mut data: Option<serde_json::Value> = None;
+
+    while let Some(key) = map.next_key::<String>()? {
+        match key.as_str() {
+            "name" => name = map.next_value()?,
+            "type" => type_ = map.next_value()?,
+            "width" => width = map.next_value()?,
+            "data" => data = map.next_value()?,
+            _ => {
+                let _: IgnoredAny = map.next_value()?;
+            }
+        }
+    }
+
+    if matches!(&name, Some(serde_json::Value::String(s)) if s == "integer")
+        && matches!(&type_, Some(serde_json::Value::String(s)) if s == "byte")
+        && matches!(&width, Some(serde_json::Value::Number(n)) if n.as_i64() == Some(8))
+    {
+        if let Some(serde_json::Value::String(mut s)) = data {
+            if s.starts_with("(byte)") {
+                s = s[6..].to_string();
+            }
+
+            if let Ok(i) = i8::from_str(&s) {
+                return Ok(i);
+            }
+        }
+    }
+
+    Err(Error::custom("not an i8 value"))
+}
+              </script>
+            </code>
+          </pre>
+          <p>😍 <span class="monospace">serde_json</span> 😍</p>
+        </section>
+      </section>
+
+      <section>
+        <section data-auto-animate>
+          <h3>Execution Flow</h3>
+          <pre>
+            <code data-trim data-line-numbers="15|3-7,16|18-19|23-29|38,39-47,50|72|80|88|95,98-99,109">
+              <script type="text/template">
+use ...;
+
+#[derive(Parser, Debug)]
+#[command(version, about, long_about = None, author)]
+struct Args {
+    ...
+}
+
+#[derive(Debug, Default)]
+struct Stats {
+    ...
+}
+
+#[tokio::main]
+async fn main() {
+    let args = Args::parse();
+
+    let javac_path = canonicalize(Path::new(&args.javac_path))?;
+    let jbmc_path = canonicalize(Path::new(&args.jbmc_path))?;
+
+    ...
+
+    let (file_paths, entrypoints): (Vec<PathBuf>, Vec<String>) = args
+        .file_paths
+        .iter()
+        .filter_map(|fpe| {
+            ...
+        })
+        .unzip();
+
+    let mut tasks: Vec<JoinHandle<()>> = Vec::new();
+    let semaphore = Arc::new(Semaphore::new(args.threads));
+    let stats = Arc::new(Mutex::new(Stats {
+        paths: file_paths.len(),
+        ..Default::default()
+    }));
+
+    for (file_path, entrypoint) in file_paths.into_iter().zip(entrypoints) {
+        let task = spawn(execute(
+            file_path,
+            entrypoint,
+            javac_path.clone(),
+            jbmc_path.clone(),
+            timeout,
+            semaphore.clone().acquire_owned().await.unwrap(),
+            stats.clone(),
+        ));
+
+        tasks.push(task);
+    }
+
+    for task in tasks {
+        task.await.unwrap();
+    }
+
+    progress.clear().unwrap();
+}
+
+async fn execute(
+    file_path: PathBuf,
+    entrypoint: String,
+    javac_path: PathBuf,
+    jbmc_path: PathBuf,
+    timeout: Duration,
+    permit: OwnedSemaphorePermit,
+    progress: MultiProgress,
+    stats: Arc<Mutex<Stats>>,
+) {
+    let _permit = permit;
+    let short_file_path = file_path.file_name().unwrap().to_str().unwrap();
+
+    let output = compile_java_class(&file_path, &javac_path, timeout).await;
+    if let Err(e) = output {
+        return;
+    }
+
+    stats.lock().await.compiled += 1;
+    let class = file_path.file_stem().unwrap().to_str().unwrap();
+
+    let output = run_jbmc(&file_path, &entrypoint, &jbmc_path, timeout).await;
+    if let Err(e) = output {
+        return;
+    }
+
+    stats.lock().await.analyzed += 1;
+    let output = output.unwrap();
+
+    let counterexamples = generate_counterexamples(output, class, &entrypoint);
+    if counterexamples.is_empty() {
+        return;
+    }
+
+    stats.lock().await.counterexamples += counterexamples.len();
+
+    for (i, counterexample) in counterexamples.into_iter().enumerate() {
+        match counterexample {
+            Ok((counterexample, reason)) => {
+                let file = file_path.with_file_name(format!("{class}-CE-{i}-{reason}.java"));
+                let result = fs::write(&file, counterexample);
+
+                match result {
+                    ...
+                }
+            }
+            Err(e) => {
+                ...
+            }
+        }
+    }
+}
+              </script>
+            </code>
+          </pre>
+          <p class="monospace">main.rs</p>
+        </section>
+
+        <section data-auto-animate>
+          <h3>Execution Flow</h3>
+          <pre>
+            <code data-trim data-line-numbers="3-7|10|11|14|15|17-26|28-42|45-55|58-71|71-82|88-94">
+              <script type="text/template">
+use ...;
+
+pub fn generate_counterexample(
+    traces: Vec<Trace>,
+    class: &str,
+    entrypoint: &str,
+) -> Result<(String, String), Box<dyn Error + Send + Sync>> {
+    ...
+
+    match trace.variant {
+        trace::Variant::Assignment(assignment) => {
+            ...
+
+            match assignment.variant {
+                trace::AssignmentVariant::Variable => match assignment.value {
+                    ...
+                    Value::I64(i) => {
+                        body.append(quote! {
+                            long $(&assignment.lhs) = $i;$['\r']
+                        });
+                    }
+                    Value::Bool(b) => {
+                        body.append(quote! {
+                            boolean $(&assignment.lhs) = $(format!("{:?}", b));$['\r']
+                        });
+                    }
+                    ...
+                    Value::Pointer(pointer) => {
+                        let type_regex = Regex::new(r"struct (?P<type>.+) \*").unwrap();
+                        let captures = type_regex.captures(&pointer.type_).unwrap();
+                        let type_ = captures.name("type").unwrap().as_str();
+
+                        ...
+
+                        if pointer.data.is_some() {
+                            return Err("Handling pointers with data is not implemented".into());
+                        }
+
+                        body.append(quote! {
+                            $type_ $(&assignment.lhs) = null;$['\r']
+                        });
+                    }
+                    ...
+                },
+                trace::AssignmentVariant::ActualParameter => {
+                    function_call_params.push(assignment.lhs.clone());
+
+                    ...
+
+                    body.append(quote! {
+                        ($(function_call_params.join(", ")));$['\n']
+                    });
+
+                    ...
+                }
+            }
+        }
+        trace::Variant::FunctionCall(function_call) => {
+            let function_name_regex =
+                Regex::new(r"java::(?P<class>.+)\.(?P<function>.+):.*").unwrap();
+
+            let captures = function_name_regex.captures(&function_call.function.identifier);
+
+            ...
+
+            body.append(quote! {
+                $['\n']$capture_class.$capture_function
+            });
+
+            function_call_name = Some(capture_function.to_string());
+        }
+        trace::Variant::Failure(failure) => {
+            reason = Some(
+                failure
+                    .property
+                    .as_str()
+                    .split('.')
+                    .nth_back(1)
+                    .unwrap()
+                    .to_string(),
+            );
+        }
+        trace::Variant::Other => {}
+    }
+
+    ...
+
+    let tokens: java::Tokens = quote! {
+        class $(format!("{class}CE")) {
+            public static void main(String[] args) {
+                $body
+            }
+        }
+    };
+
+    ...
+}
+              </script>
+            </code>
+          </pre>
+          <p class="monospace">codegen.rs</p>
+        </section>
+      </section>
+
+      <section>
+        <h3>API</h3>
+        <pre>
+          <code data-trim data-line-numbers>
+            <script type="text/template">
+$ jbmc-counterexample -h
+
+A tool to extract counterexamples from JBMC output
+
+Usage: jbmc-counterexample [OPTIONS] [FILE_PATHS]...
+
+Arguments:
+  [FILE_PATHS]...  Path(s) to the Java file(s)/folder(s) to be analyzed.
+                   If a path is a folder, the file must be named either Main.java or the same as the folder.
+                   Entrypoint can be specified with the format path:entrypoint.
+                   If no entrypoint is provided, the default entrypoint is used
+
+Options:
+  -e, --entrypoint <ENTRYPOINT>  Entrypoint function to be analyzed [default: test]
+  -c, --javac <JAVAC_PATH>       Path to the Java compiler executable [default: javac]
+  -j, --jbmc <JBMC_PATH>         Path to the JBMC executable [default: jbmc]
+  -t, --timeout <TIMEOUT>        Execution timeout in seconds [default: 60]
+  -n, --threads <THREADS>        Maximum number of threads to use [default: 1]
+  -h, --help                     Print help
+  -V, --version                  Print version
+            </script>
+          </code>
+        </pre>
+      </section>
+
+      <section>
+        <section data-auto-animate>
+          <h3>Results</h3>
+          <pre>
+            <code data-trim data-line-numbers="1|3-5|6-15|16-25|26-37">
+              <script type="text/template">
+$ jbmc-counterexample -j ./cbmc/jbmc/src/jbmc/jbmc -n 4 -t 15 ./examples/benchmark/*
+
+[1/4] 🔍 Resolving dependencies...
+      🔍 Java compiler version: javac 17.0.11
+      🔍 JBMC version: 6.0.0-preview (cbmc-6.0.0-alpha-326-g1ca18f2629)
+[2/4] 🧪 Analyzing Java files...
+      🧪 File: "aastore_aaload1", Function: "test"
+      🧪 File: "ArithmeticException1", Function: "test"
+      🧪 File: "ArithmeticException5", Function: "test"
+      🧪 File: "ArithmeticException6", Function: "test"
+      ...
+      🧪 File: "virtual1", Function: "test"
+      🧪 File: "virtual2", Function: "test"
+      🧪 File: "virtual4", Function: "test"
+      🧪 File: "virtual_function_unwinding", Function: "test"
+[3/4] 🚀 Executing...
+      ✅ "ArithmeticException5.java": No counterexamples found
+      🎯 "ArithmeticException6.java": Counterexample written to file "ArithmeticException6-CE-0-integer-divide-by-zero.java"
+      🎯 "ArithmeticException1.java": Counterexample written to file "ArithmeticException1-CE-0-integer-divide-by-zero.java"
+      💥 "ArrayIndexOutOfBoundsException1.java": Failed to analyze: data did not match any variant of untagged enum Output at line 1062 column 2
+      ✅ "array2.java": No counterexamples found
+      ✅ "aastore_aaload1.java": No counterexamples found
+      ...
+      💥 "StringValueOf01.java": Failed to analyze: JBMC timed out
+      💥 "TokenTest02.java": Failed to analyze: JBMC timed out
+[4/4] 🎉 Done!
+      📊 Total paths: 178
+      📊 Total compiled: 173
+      📊 Total analyzed: 83
+      📊 Total counterexamples: 43
+      📊 Total successful counterexamples: 40
+      📊 Vulnerabilities generated:
+          - bad-dynamic-cast: 1
+          - assertion: 26
+          - array-create-negative-size: 2
+          - integer-divide-by-zero: 2
+          - null-pointer-exception: 9
+              </script>
+            </code>
+          </pre>
+        </section>
+
+        <section data-auto-animate>
+          <h3>Results</h3>
+          <pre>
+            <code data-trim data-line-numbers>
+              <script type="text/template">
+public class Arithmetic0 {
+  public static void test(int i) {
+    @SuppressWarnings("unused")
+    int j = 10 / i;
+  }
+}
+              </script>
+            </code>
+          </pre>
+          <pre>
+            <code data-trim data-line-numbers>
+              <script type="text/template">
+class Arithmetic0CE {
+    public static void main(String[] args) {
+        int arg0i = 0;
+
+        Arithmetic0.test(arg0i);
+    }
+}
+              </script>
+            </code>
+          </pre>
+        </section>
+      </section>
+
+      <section>
+        <h3>JPF Output</h3>
+        <img data-src="./static/jpf.png" width="80%" />
+        <p>🙄</p>
+      </section>
+
+      <section>
+        <h3>Setbacks</h3>
+        <p>TODO</p>
+      </section>
+
+      <section>
+        <h3>Related Work</h3>
+        <p>TODO</p>
+      </section>
+
+      <section id="references">
+        <h3>References</h3>
+        <p>TODO</p>
+      </section>
+    </div>
+  </div>
+
+  <script src="plugin/highlight/highlight.js"></script>
+  <script src="plugin/notes/notes.js"></script>
+  <script src="plugin/search/search.js"></script>
+  <script src="plugin/zoom/zoom.js"></script>
+  <script src="dist/reveal.js"></script>
+
+  <script>
+    Reveal.initialize({
+      controlsTutorial: false,
+      showNotes: false,
+      hash: true,
+      plugins: [RevealHighlight, RevealNotes, RevealSearch, RevealZoom],
+      pdfSeparateFragments: false,
+    });
+  </script>
+</body>
+
+</html>

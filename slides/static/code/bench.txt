@@ -1,0 +1,51 @@
+$ jbmc-counterexample -j ./cbmc/jbmc/src/jbmc/jbmc -n 4 -t 15 ./examples/benchmark/*
+
+         #         #
+          #       #
+           #######
+         ##       ##           .-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-.
+         ##       ##           |  _________                      __                _________ __         .__ __             |
+           #######             !  \_   ___ \  ____  __ __  _____/  |_  ___________/   _____//  |________|__|  | __ ____    !
+         ###########           :  /    \  \/ /  _ \|  |  \/    \   __\/ __ \_  __ \_____  \\   __\_  __ \  |  |/ // __ \   :
+      ###   #####   ###        :  \     \___(  <_> )  |  /   |  \  | \  ___/|  | \/        \|  |  |  | \/  |    <\  ___/   :
+    ## #      #      # ##      !   \______  /\____/|____/|___|  /__|  \___  >__| /_______  /|__|  |__|  |__|__|_ \\___  >  !
+  #    # ########### #    #    |          \/                  \/          \/             \/                     \/    \/   |
+  ######             ######    .-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-.
+        ###       ###
+           #######
+
+[1/4] 🔍 Resolving dependencies...
+      🔍 Java compiler version: javac 17.0.11
+      🔍 JBMC version: 6.0.0-preview (cbmc-6.0.0-alpha-326-g1ca18f2629)
+[2/4] 🧪 Analyzing Java files...
+      🧪 File: "aastore_aaload1", Function: "test"
+      🧪 File: "ArithmeticException1", Function: "test"
+      🧪 File: "ArithmeticException5", Function: "test"
+      🧪 File: "ArithmeticException6", Function: "test"
+      ...
+      🧪 File: "virtual1", Function: "test"
+      🧪 File: "virtual2", Function: "test"
+      🧪 File: "virtual4", Function: "test"
+      🧪 File: "virtual_function_unwinding", Function: "test"
+[3/4] 🚀 Executing...
+      ✅ "ArithmeticException5.java": No counterexamples found
+      🎯 "ArithmeticException6.java": Counterexample written to file "ArithmeticException6-CE-0-integer-divide-by-zero.java"
+      🎯 "ArithmeticException1.java": Counterexample written to file "ArithmeticException1-CE-0-integer-divide-by-zero.java"
+      💥 "ArrayIndexOutOfBoundsException1.java": Failed to analyze: data did not match any variant of untagged enum Output at line 1062 column 2
+      ✅ "array2.java": No counterexamples found
+      ✅ "aastore_aaload1.java": No counterexamples found
+      ...
+      💥 "StringValueOf01.java": Failed to analyze: JBMC timed out
+      💥 "TokenTest02.java": Failed to analyze: JBMC timed out
+[4/4] 🎉 Done!
+      📊 Total paths: 178
+      📊 Total compiled: 173
+      📊 Total analyzed: 83
+      📊 Total counterexamples: 43
+      📊 Total successful counterexamples: 40
+      📊 Vulnerabilities generated:
+          - bad-dynamic-cast: 1
+          - assertion: 26
+          - array-create-negative-size: 2
+          - integer-divide-by-zero: 2
+          - null-pointer-exception: 9

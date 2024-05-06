@@ -1,0 +1,20 @@
+$ jbmc-counterexample -h
+
+A tool to extract counterexamples from JBMC output
+
+Usage: jbmc-counterexample [OPTIONS] [FILE_PATHS]...
+
+Arguments:
+  [FILE_PATHS]...  Path(s) to the Java file(s)/folder(s) to be analyzed.
+                   If a path is a folder, the file must be named either Main.java or the same as the folder.
+                   Entrypoint can be specified with the format path:entrypoint.
+                   If no entrypoint is provided, the default entrypoint is used
+
+Options:
+  -e, --entrypoint <ENTRYPOINT>  Entrypoint function to be analyzed [default: test]
+  -c, --javac <JAVAC_PATH>       Path to the Java compiler executable [default: javac]
+  -j, --jbmc <JBMC_PATH>         Path to the JBMC executable [default: jbmc]
+  -t, --timeout <TIMEOUT>        Execution timeout in seconds [default: 60]
+  -n, --threads <THREADS>        Maximum number of threads to use [default: 1]
+  -h, --help                     Print help
+  -V, --version                  Print version

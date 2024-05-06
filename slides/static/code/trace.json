@@ -1,0 +1,788 @@
+[
+  {
+    "function": {
+      "displayName": "__CPROVER_initialize",
+      "identifier": "__CPROVER_initialize",
+      "sourceLocation": {}
+    },
+    "hidden": false,
+    "internal": true,
+    "stepType": "function-call",
+    "thread": 0
+  },
+  {
+    "assignmentType": "variable",
+    "hidden": false,
+    "internal": false,
+    "lhs": "__CPROVER_rounding_mode",
+    "mode": "C",
+    "stepType": "assignment",
+    "thread": 0,
+    "value": {
+      "binary": "00000000000000000000000000000000",
+      "data": "0",
+      "name": "integer",
+      "type": "signed int",
+      "width": 32
+    }
+  },
+  {
+    "assignmentType": "variable",
+    "hidden": false,
+    "internal": false,
+    "lhs": "@inflight_exception",
+    "mode": "java",
+    "stepType": "assignment",
+    "thread": 0,
+    "value": {
+      "data": "null",
+      "name": "pointer",
+      "type": "void *"
+    }
+  },
+  {
+    "assignmentType": "variable",
+    "hidden": false,
+    "internal": false,
+    "lhs": "$assertionsDisabled",
+    "mode": "java",
+    "stepType": "assignment",
+    "thread": 0,
+    "value": {
+      "binary": "00000000",
+      "data": "false",
+      "name": "integer",
+      "type": "const boolean",
+      "width": 8
+    }
+  },
+  {
+    "assignmentType": "variable",
+    "hidden": false,
+    "internal": false,
+    "lhs": "java$$Long0$$clinit_already_run",
+    "mode": "java",
+    "stepType": "assignment",
+    "thread": 0,
+    "value": {
+      "binary": "0",
+      "data": false,
+      "name": "boolean"
+    }
+  },
+  {
+    "assignmentType": "variable",
+    "hidden": false,
+    "internal": false,
+    "lhs": "Long0@class_model.@class_identifier",
+    "mode": "java",
+    "stepType": "assignment",
+    "thread": 0,
+    "value": {
+      "data": "java::java.lang.Class",
+      "name": "string"
+    }
+  },
+  {
+    "function": {
+      "displayName": "__CPROVER_initialize",
+      "identifier": "__CPROVER_initialize",
+      "sourceLocation": {}
+    },
+    "hidden": false,
+    "internal": false,
+    "stepType": "function-return",
+    "thread": 0
+  },
+  {
+    "assignmentType": "variable",
+    "hidden": false,
+    "internal": true,
+    "lhs": "uncaught_exception'",
+    "mode": "java",
+    "stepType": "assignment",
+    "thread": 0,
+    "value": {
+      "data": "null",
+      "name": "pointer",
+      "type": "void *"
+    }
+  },
+  {
+    "assignmentType": "variable",
+    "hidden": true,
+    "internal": true,
+    "lhs": "arg0l",
+    "mode": "java",
+    "sourceLocation": {
+      "file": "Long0.java",
+      "function": "java::Long0.test:(J)V",
+      "line": "3"
+    },
+    "stepType": "assignment",
+    "thread": 0,
+    "value": {
+      "binary": "0000000000000000000000000000000000000000000000000000000000000000",
+      "data": "0L",
+      "name": "integer",
+      "type": "long",
+      "width": 64
+    }
+  },
+  {
+    "assignmentType": "variable",
+    "hidden": false,
+    "internal": true,
+    "lhs": "arg0l",
+    "mode": "java",
+    "sourceLocation": {
+      "file": "Long0.java",
+      "function": "java::Long0.test:(J)V",
+      "line": "3"
+    },
+    "stepType": "assignment",
+    "thread": 0,
+    "value": {
+      "binary": "0000000000000000000000000000000000000000000000000000000000000000",
+      "data": "0L",
+      "name": "integer",
+      "type": "long",
+      "width": 64
+    }
+  },
+  {
+    "hidden": false,
+    "inputID": "arg0l",
+    "internal": true,
+    "mode": "java",
+    "sourceLocation": {
+      "file": "Long0.java",
+      "function": "java::Long0.test:(J)V",
+      "line": "3"
+    },
+    "stepType": "input",
+    "thread": 0,
+    "values": [
+      {
+        "binary": "0000000000000000000000000000000000000000000000000000000000000000",
+        "data": "0L",
+        "name": "integer",
+        "type": "long",
+        "width": 64
+      }
+    ]
+  },
+  {
+    "function": {
+      "displayName": "Long0.test(long)",
+      "identifier": "java::Long0.test:(J)V",
+      "sourceLocation": {
+        "file": "Long0.java",
+        "function": "java::Long0.test:(J)V",
+        "line": "3"
+      }
+    },
+    "hidden": false,
+    "internal": false,
+    "sourceLocation": {
+      "file": "Long0.java",
+      "function": "java::Long0.test:(J)V",
+      "line": "3"
+    },
+    "stepType": "function-call",
+    "thread": 0
+  },
+  {
+    "assignmentType": "actual-parameter",
+    "hidden": false,
+    "internal": false,
+    "lhs": "arg0l",
+    "mode": "java",
+    "sourceLocation": {
+      "file": "Long0.java",
+      "function": "java::Long0.test:(J)V",
+      "line": "3"
+    },
+    "stepType": "assignment",
+    "thread": 0,
+    "value": {
+      "binary": "0000000000000000000000000000000000000000000000000000000000000000",
+      "data": "0L",
+      "name": "integer",
+      "type": "long",
+      "width": 64
+    }
+  },
+  {
+    "assignmentType": "variable",
+    "hidden": false,
+    "internal": false,
+    "lhs": "arg0l",
+    "mode": "java",
+    "sourceLocation": {
+      "bytecodeIndex": "3",
+      "file": "Long0.java",
+      "function": "java::Long0.test:(J)V",
+      "line": "3"
+    },
+    "stepType": "assignment",
+    "thread": 0,
+    "value": {
+      "binary": "0000000000000000000000000000000000000000000000000000000000000001",
+      "data": "1L",
+      "name": "integer",
+      "type": "long",
+      "width": 64
+    }
+  },
+  {
+    "hidden": false,
+    "sourceLocation": {
+      "bytecodeIndex": "4",
+      "file": "Long0.java",
+      "function": "java::Long0.test:(J)V",
+      "line": "4"
+    },
+    "stepType": "location-only",
+    "thread": 0
+  },
+  {
+    "function": {
+      "displayName": "java::Long0.<clinit_wrapper>",
+      "identifier": "java::Long0.<clinit_wrapper>",
+      "sourceLocation": {}
+    },
+    "hidden": false,
+    "internal": false,
+    "sourceLocation": {
+      "bytecodeIndex": "4",
+      "file": "Long0.java",
+      "function": "java::Long0.test:(J)V",
+      "line": "4"
+    },
+    "stepType": "function-call",
+    "thread": 0
+  },
+  {
+    "assignmentType": "variable",
+    "hidden": false,
+    "internal": false,
+    "lhs": "java$$Long0$$clinit_already_run",
+    "mode": "java",
+    "stepType": "assignment",
+    "thread": 0,
+    "value": {
+      "binary": "1",
+      "data": true,
+      "name": "boolean"
+    }
+  },
+  {
+    "hidden": false,
+    "sourceLocation": {
+      "file": "Long0.java",
+      "function": "java::Long0.<clinit>:()V",
+      "line": "1"
+    },
+    "stepType": "location-only",
+    "thread": 0
+  },
+  {
+    "function": {
+      "displayName": "Long0.<clinit>()",
+      "identifier": "java::Long0.<clinit>:()V",
+      "sourceLocation": {
+        "file": "Long0.java",
+        "function": "java::Long0.<clinit>:()V",
+        "line": "1"
+      }
+    },
+    "hidden": false,
+    "internal": false,
+    "sourceLocation": {
+      "file": "Long0.java",
+      "function": "java::Long0.<clinit>:()V",
+      "line": "1"
+    },
+    "stepType": "function-call",
+    "thread": 0
+  },
+  {
+    "assignmentType": "variable",
+    "hidden": true,
+    "internal": false,
+    "lhs": "$stack_tmp1",
+    "mode": "java",
+    "stepType": "assignment",
+    "thread": 0,
+    "value": {
+      "binary": "00000000000000000000000000000000",
+      "data": "0",
+      "name": "integer",
+      "type": "int",
+      "width": 32
+    }
+  },
+  {
+    "assignmentType": "variable",
+    "hidden": true,
+    "internal": false,
+    "lhs": "return_tmp0",
+    "mode": "java",
+    "stepType": "assignment",
+    "thread": 0,
+    "value": {
+      "binary": "00000000",
+      "data": "false",
+      "name": "integer",
+      "type": "const boolean",
+      "width": 8
+    }
+  },
+  {
+    "hidden": false,
+    "sourceLocation": {
+      "bytecodeIndex": "1",
+      "file": "Long0.java",
+      "function": "java::Long0.<clinit>:()V",
+      "line": "1"
+    },
+    "stepType": "location-only",
+    "thread": 0
+  },
+  {
+    "function": {
+      "displayName": "java.lang.Class.desiredAssertionStatus()",
+      "identifier": "java::java.lang.Class.desiredAssertionStatus:()Z",
+      "sourceLocation": {}
+    },
+    "hidden": false,
+    "internal": false,
+    "sourceLocation": {
+      "bytecodeIndex": "1",
+      "file": "Long0.java",
+      "function": "java::Long0.<clinit>:()V",
+      "line": "1"
+    },
+    "stepType": "function-call",
+    "thread": 0
+  },
+  {
+    "assignmentType": "actual-parameter",
+    "hidden": false,
+    "internal": false,
+    "lhs": "this",
+    "mode": "java",
+    "sourceLocation": {
+      "bytecodeIndex": "1",
+      "file": "Long0.java",
+      "function": "java::Long0.<clinit>:()V",
+      "line": "1"
+    },
+    "stepType": "assignment",
+    "thread": 0,
+    "value": {
+      "data": "Long0@class_model",
+      "name": "pointer",
+      "type": "struct java.lang.Class *"
+    }
+  },
+  {
+    "assignmentType": "variable",
+    "hidden": false,
+    "internal": false,
+    "lhs": "to_return",
+    "mode": "java",
+    "stepType": "assignment",
+    "thread": 0,
+    "value": {
+      "binary": "00000001",
+      "data": "true",
+      "name": "integer",
+      "type": "const boolean",
+      "width": 8
+    }
+  },
+  {
+    "assignmentType": "variable",
+    "hidden": true,
+    "internal": false,
+    "lhs": "java.lang.Class.desiredAssertionStatus:()Z#return_value",
+    "mode": "java",
+    "stepType": "assignment",
+    "thread": 0,
+    "value": {
+      "binary": "00000001",
+      "data": "true",
+      "name": "integer",
+      "type": "const boolean",
+      "width": 8
+    }
+  },
+  {
+    "function": {
+      "displayName": "java.lang.Class.desiredAssertionStatus()",
+      "identifier": "java::java.lang.Class.desiredAssertionStatus:()Z",
+      "sourceLocation": {}
+    },
+    "hidden": false,
+    "internal": false,
+    "stepType": "function-return",
+    "thread": 0
+  },
+  {
+    "assignmentType": "variable",
+    "hidden": false,
+    "internal": false,
+    "lhs": "return_tmp0",
+    "mode": "java",
+    "sourceLocation": {
+      "bytecodeIndex": "1",
+      "file": "Long0.java",
+      "function": "java::Long0.<clinit>:()V",
+      "line": "1"
+    },
+    "stepType": "assignment",
+    "thread": 0,
+    "value": {
+      "binary": "00000001",
+      "data": "true",
+      "name": "integer",
+      "type": "const boolean",
+      "width": 8
+    }
+  },
+  {
+    "hidden": false,
+    "sourceLocation": {
+      "bytecodeIndex": "2",
+      "file": "Long0.java",
+      "function": "java::Long0.<clinit>:()V",
+      "line": "1"
+    },
+    "stepType": "location-only",
+    "thread": 0
+  },
+  {
+    "hidden": false,
+    "sourceLocation": {
+      "bytecodeIndex": "5",
+      "file": "Long0.java",
+      "function": "java::Long0.<clinit>:()V",
+      "line": "1"
+    },
+    "stepType": "location-only",
+    "thread": 0
+  },
+  {
+    "assignmentType": "variable",
+    "hidden": false,
+    "internal": false,
+    "lhs": "$stack_tmp1",
+    "mode": "java",
+    "stepType": "assignment",
+    "thread": 0,
+    "value": {
+      "binary": "00000000000000000000000000000000",
+      "data": "0",
+      "name": "integer",
+      "type": "int",
+      "width": 32
+    }
+  },
+  {
+    "hidden": false,
+    "sourceLocation": {
+      "bytecodeIndex": "6",
+      "file": "Long0.java",
+      "function": "java::Long0.<clinit>:()V",
+      "line": "1"
+    },
+    "stepType": "location-only",
+    "thread": 0
+  },
+  {
+    "function": {
+      "displayName": "java::Long0.<clinit_wrapper>",
+      "identifier": "java::Long0.<clinit_wrapper>",
+      "sourceLocation": {}
+    },
+    "hidden": false,
+    "internal": false,
+    "sourceLocation": {
+      "bytecodeIndex": "6",
+      "file": "Long0.java",
+      "function": "java::Long0.<clinit>:()V",
+      "line": "1"
+    },
+    "stepType": "function-call",
+    "thread": 0
+  },
+  {
+    "function": {
+      "displayName": "java::Long0.<clinit_wrapper>",
+      "identifier": "java::Long0.<clinit_wrapper>",
+      "sourceLocation": {}
+    },
+    "hidden": false,
+    "internal": false,
+    "stepType": "function-return",
+    "thread": 0
+  },
+  {
+    "assignmentType": "variable",
+    "hidden": false,
+    "internal": false,
+    "lhs": "$assertionsDisabled",
+    "mode": "java",
+    "sourceLocation": {
+      "bytecodeIndex": "6",
+      "file": "Long0.java",
+      "function": "java::Long0.<clinit>:()V",
+      "line": "1"
+    },
+    "stepType": "assignment",
+    "thread": 0,
+    "value": {
+      "binary": "00000000",
+      "data": "false",
+      "name": "integer",
+      "type": "const boolean",
+      "width": 8
+    }
+  },
+  {
+    "function": {
+      "displayName": "Long0.<clinit>()",
+      "identifier": "java::Long0.<clinit>:()V",
+      "sourceLocation": {
+        "file": "Long0.java",
+        "function": "java::Long0.<clinit>:()V",
+        "line": "1"
+      }
+    },
+    "hidden": false,
+    "internal": false,
+    "stepType": "function-return",
+    "thread": 0
+  },
+  {
+    "function": {
+      "displayName": "java::Long0.<clinit_wrapper>",
+      "identifier": "java::Long0.<clinit_wrapper>",
+      "sourceLocation": {}
+    },
+    "hidden": false,
+    "internal": false,
+    "stepType": "function-return",
+    "thread": 0
+  },
+  {
+    "hidden": false,
+    "sourceLocation": {
+      "bytecodeIndex": "5",
+      "file": "Long0.java",
+      "function": "java::Long0.test:(J)V",
+      "line": "4"
+    },
+    "stepType": "location-only",
+    "thread": 0
+  },
+  {
+    "hidden": false,
+    "sourceLocation": {
+      "bytecodeIndex": "9",
+      "file": "Long0.java",
+      "function": "java::Long0.test:(J)V",
+      "line": "4"
+    },
+    "stepType": "location-only",
+    "thread": 0
+  },
+  {
+    "assignmentType": "variable",
+    "hidden": true,
+    "internal": false,
+    "lhs": "new_tmp0",
+    "mode": "java",
+    "stepType": "assignment",
+    "thread": 0,
+    "value": {
+      "data": "null",
+      "name": "pointer",
+      "type": "struct java.lang.AssertionError *"
+    }
+  },
+  {
+    "assignmentType": "variable",
+    "hidden": false,
+    "internal": true,
+    "lhs": "dynamic_object",
+    "mode": "java",
+    "sourceLocation": {
+      "bytecodeIndex": "10",
+      "file": "Long0.java",
+      "function": "java::Long0.test:(J)V",
+      "line": "4"
+    },
+    "stepType": "assignment",
+    "thread": 0,
+    "value": {
+      "members": [
+        {
+          "name": "@class_identifier",
+          "value": {
+            "data": "java::java.lang.Class",
+            "name": "string"
+          }
+        }
+      ],
+      "name": "struct"
+    }
+  },
+  {
+    "assignmentType": "variable",
+    "hidden": false,
+    "internal": false,
+    "lhs": "dynamic_object.@class_identifier",
+    "mode": "java",
+    "sourceLocation": {
+      "bytecodeIndex": "10",
+      "file": "Long0.java",
+      "function": "java::Long0.test:(J)V",
+      "line": "4"
+    },
+    "stepType": "assignment",
+    "thread": 0,
+    "value": {
+      "data": "java::java.lang.Class",
+      "name": "string"
+    }
+  },
+  {
+    "assignmentType": "variable",
+    "hidden": false,
+    "internal": true,
+    "lhs": "new_tmp0",
+    "mode": "java",
+    "sourceLocation": {
+      "bytecodeIndex": "10",
+      "file": "Long0.java",
+      "function": "java::Long0.test:(J)V",
+      "line": "4"
+    },
+    "stepType": "assignment",
+    "thread": 0,
+    "value": {
+      "data": "dynamic_object",
+      "name": "pointer",
+      "type": "struct java.lang.AssertionError *"
+    }
+  },
+  {
+    "assignmentType": "variable",
+    "hidden": false,
+    "internal": false,
+    "lhs": "dynamic_object.@class_identifier",
+    "mode": "java",
+    "sourceLocation": {
+      "bytecodeIndex": "10",
+      "file": "Long0.java",
+      "function": "java::Long0.test:(J)V",
+      "line": "4"
+    },
+    "stepType": "assignment",
+    "thread": 0,
+    "value": {
+      "data": "java::java.lang.AssertionError",
+      "name": "string"
+    }
+  },
+  {
+    "hidden": false,
+    "sourceLocation": {
+      "bytecodeIndex": "12",
+      "file": "Long0.java",
+      "function": "java::Long0.test:(J)V",
+      "line": "4"
+    },
+    "stepType": "location-only",
+    "thread": 0
+  },
+  {
+    "function": {
+      "displayName": "java.lang.AssertionError.<init>()",
+      "identifier": "java::java.lang.AssertionError.<init>:()V",
+      "sourceLocation": {}
+    },
+    "hidden": false,
+    "internal": false,
+    "sourceLocation": {
+      "bytecodeIndex": "12",
+      "file": "Long0.java",
+      "function": "java::Long0.test:(J)V",
+      "line": "4"
+    },
+    "stepType": "function-call",
+    "thread": 0
+  },
+  {
+    "assignmentType": "actual-parameter",
+    "hidden": false,
+    "internal": true,
+    "lhs": "this",
+    "mode": "java",
+    "sourceLocation": {
+      "bytecodeIndex": "12",
+      "file": "Long0.java",
+      "function": "java::Long0.test:(J)V",
+      "line": "4"
+    },
+    "stepType": "assignment",
+    "thread": 0,
+    "value": {
+      "data": "dynamic_object",
+      "name": "pointer",
+      "type": "struct java.lang.AssertionError *"
+    }
+  },
+  {
+    "assignmentType": "variable",
+    "hidden": false,
+    "internal": true,
+    "lhs": "to_construct",
+    "mode": "java",
+    "stepType": "assignment",
+    "thread": 0,
+    "value": {
+      "data": "dynamic_object",
+      "name": "pointer",
+      "type": "struct java.lang.AssertionError *"
+    }
+  },
+  {
+    "function": {
+      "displayName": "java.lang.AssertionError.<init>()",
+      "identifier": "java::java.lang.AssertionError.<init>:()V",
+      "sourceLocation": {}
+    },
+    "hidden": false,
+    "internal": false,
+    "stepType": "function-return",
+    "thread": 0
+  },
+  {
+    "hidden": false,
+    "internal": false,
+    "property": "java::Long0.test:(J)V.assertion.1",
+    "reason": "assertion at file Long0.java line 4 function java::Long0.test:(J)V bytecode-index 13",
+    "sourceLocation": {
+      "bytecodeIndex": "13",
+      "file": "Long0.java",
+      "function": "java::Long0.test:(J)V",
+      "line": "4"
+    },
+    "stepType": "failure",
+    "thread": 0
+  }
+]
