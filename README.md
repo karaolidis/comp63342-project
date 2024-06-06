@@ -1,4 +1,4 @@
-# COMP63342-project Overview and Instructions
+# comp63342-project
 
 ```
          #         #​

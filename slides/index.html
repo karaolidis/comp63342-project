@@ -108,7 +108,7 @@
       <section>
         <section data-auto-animate>
           <h3>The Solution</h3>
-          <p>We developed a tool that:</p>
+          <p>We developed <a href="https://github.com/karaolidis/comp63342-project">a tool</a> that:</p>
           <ul>
             <li class="fragment">Collects and manipulates JBMC traces</li>
             <li class="fragment">Generates Java code using the traces to reproduce identified vulnerabilities</li>
@@ -122,6 +122,11 @@
             <li class="fragment">Evaluated the tool's effectiveness with benchmarks from the Software Verification Competition (SV-COMP)</li>
             <li class="fragment">Compared our tool with other Java verifiers (JPF)</li>
           </ul>
+        </section>
+
+        <section data-auto-animate>
+          <h3>The Solution</h3>
+          <img data-src="./static/github.jpg" width="65%" />
         </section>
       </section>
 
@@ -638,18 +643,133 @@ class Arithmetic0CE {
       </section>
 
       <section>
-        <h3>Setbacks</h3>
-        <p>TODO</p>
+        <section data-auto-animate>
+          <h3>Setbacks</h3>
+          <ul>
+            <li class="fragment">Variables must be declared as parameters to the tested method</li>
+          </ul>
+        </section>
+
+        <section data-auto-animate>
+          <h3>Setbacks</h3>
+          <ul>
+            <li>Variables must be declared as parameters to the tested method</li>
+          </ul>
+          <div>
+            <pre>
+              <code data-trim data-line-numbers>
+                <script type="text/template">
+public class Arithmetic0 {
+  public static void test() {
+    int i = nondet_int();
+
+    @SuppressWarnings("unused")
+    int j = 10 / i;
+  }
+}
+                </script>
+              </code>
+            </pre>
+            <p>❌</p>
+          </div>
+        </section>
+
+        <section data-auto-animate>
+          <h3>Setbacks</h3>
+          <ul>
+            <li>Variables must be declared as parameters to the tested method</li>
+          </ul>
+          <div>
+            <pre>
+              <code data-trim data-line-numbers>
+                <script type="text/template">
+public class Arithmetic0 {
+  public static void test(int i) {
+    @SuppressWarnings("unused")
+    int j = 10 / i;
+  }
+}
+                </script>
+              </code>
+            </pre>
+            <p>✅</p>
+          </div>
+        </section>
+
+        <section data-auto-animate>
+          <h3>Setbacks</h3>
+          <ul>
+            <li>Variables must be declared as parameters to the tested method</li>
+            <li>No support for non-<span class="monospace">NULL</span> pointers</li>
+          </ul>
+        </section>
+
+        <section data-auto-animate>
+          <h3>Setbacks</h3>
+          <ul>
+            <li>Variables must be declared as parameters to the tested method</li>
+            <li>No support for non-<span class="monospace">NULL</span> pointers</li>
+          </ul>
+          <div>
+            <pre>
+              <code data-trim data-line-numbers>
+                <script type="text/template">
+public class String0 {
+  public static void test() {
+    String s = new String("Hello, World!");
+    assert s.equals("Hello, World!");
+  }
+}
+                </script>
+              </code>
+            </pre>
+            <p>❌</p>
+          </div>
+        </section>
+
+        <section data-auto-animate>
+          <h3>Setbacks</h3>
+          <ul>
+            <li>Variables must be declared as parameters to the tested method</li>
+            <li>No support for non-<span class="monospace">NULL</span> pointers</li>
+            <li>Compilation dependency errors</li>
+          </ul>
+        </section>
       </section>
 
       <section>
         <h3>Related Work</h3>
-        <p>TODO</p>
+        <ul>
+          <li class="fragment">Counterexample-Guided Refinement</li>
+          <li class="fragment">Symbolic Execution Engines</li>
+          <li class="fragment">Static Analysis Tools for Java</li>
+        </ul>
+      </section>
+
+      <section>
+        <h3>Open Challenges</h3>
+        <ul>
+          <li class="fragment">Completeness</li>
+          <li class="fragment">Witness Validation</li>
+        </ul>
+      </section>
+
+      <section>
+        <h3 class="r-fit-text">Thank You</h3>
+        <p>💕</p>
       </section>
 
       <section id="references">
         <h3>References</h3>
-        <p>TODO</p>
+        <small>
+          <ul>
+            <li>Cordeiro, L., Kesseli, P., Kroening, D., Schrammel, P. and Trtik, M., "JBMC: A bounded model checking tool for verifying Java bytecode"</li>
+            <li>Taghdiri, M., and Jackson, D., "Inferring specifications to detect errors in code"</li>
+            <li>Kádár, I., "The optimization of a symbolic execution engine for detecting runtime errors"</li>
+            <li>Kahsai, T., Rümmer, P., Sanchez, H. and Schäf, M., "JayHorn: A framework for verifying Java programs"</li>
+            <li>Wu, T., Schrammel, P., and Cordeiro, L., "Wit4Java: A violation-witness validator for Java verifiers"</li>
+          </ul>
+        </small>
       </section>
     </div>
   </div>
