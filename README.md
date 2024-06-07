@@ -100,3 +100,6 @@ This project aims to automate benchmarks for Java Bytecode Model Checking (JBMC)
     ```
     bash winrun-jbmc.sh
     ```
+## Demo
+
+A short demo of the tool can be accessed at https://youtu.be/3lpKxWIvOqA
